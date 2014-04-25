@@ -146,7 +146,7 @@ label {
 }
 
 #login_error {
-    position: absolute;
+    position: fixed;
     top: 347px;
     left: 320px;
     width: 180px;

@@ -308,7 +308,7 @@ class html:
             onsubmit = ' onsubmit="%s"' % onsubmit
         else:
             onsubmit = ''
-        self.write('<form id="form_%s" name="%s" class="%s" action="%s" method="%s"%s%s>\n' %
+        self.write('<form id="form_%s" name="%s" class="%s form-horizontal" role="form" action="%s" method="%s"%s%s>\n' %
                    (name, name, name, action, method, enctype, onsubmit))
         self.hidden_field("filled_in", name)
         if add_transid:
@@ -389,21 +389,41 @@ class html:
             return self.req.myfile + ".py"
 
     def image_button(self, varname, title, cssclass = ''):
-        if not self.mobile:
-            self.write('<label for="%s" class=image_button>' % varname)
+        # if not self.mobile:
+            # self.write('<label for="%s" class=image_button>' % varname)
         self.raw_button(varname, title, cssclass)
-        if not self.mobile:
-            self.write('</label>')
+        # if not self.mobile:
+            # self.write('</label>')
 
     def button(self, *args):
         self.image_button(*args)
 
-    def raw_button(self, varname, title, cssclass=""):
-        self.write("<input onfocus=\"if (this.blur) this.blur();\" "
-                   "type=submit name=\"%s\" id=\"%s\" value=\"%s\" "
-                   "class=\"%s\">\n" % \
-                   ( varname, varname, title, cssclass))
+    def raw_button(self, varname, title, cssclass="", icon=None):
+        # self.write("<input onfocus=\"if (this.blur) this.blur();\" "
+        #            "type=submit name=\"%s\" id=\"%s\" value=\"%s\" "
+        #            "class=\"%s\">\n" % \
+        #            ( varname, varname, title, cssclass))
+        result = """  
+                    <button 
+                    onfocus=\"if (this.blur) this.blur();\"
+                    type='submit' 
+                    name='%s' 
+                    id='%s' 
+                    value='%s'
+                    class='%s btn btn-primary' >
+        """ % (varname, varname, title, cssclass)
 
+        if icon:
+            result += """
+                <i class="fa %s"></i>
+            """ % (icon)
+
+        result += """
+        %s
+        </button>
+        """ % (title)
+
+        self.write(result)
 
     def buttonlink(self, href, text, add_transid=False, obj_id='', style='', title='', disabled=''):
         if add_transid:
@@ -844,11 +864,14 @@ class html:
     def immediate_browser_redirect(self, secs, url):
         self.javascript("setReload(%s, '%s');" % (secs, url))
 
-    def header(self, title='', **args):
+    def header(self, title='', css_class=None,**args):
         if self.output_format == "html":
             if not self.header_sent:
                 self.html_head(title, **args)
-                self.write('<body class="main %s">' % self.var("_body_class", ""))
+                if css_class:
+                    self.write('<body class="main %s %s">' % (self.var("_body_class", ""), css_class))
+                else:
+                    self.write('<body class="main %s">' % self.var("_body_class", ""))
                 self.header_sent = True
                 if self.render_headfoot:
                     self.top_heading(title)
@@ -882,9 +905,11 @@ class html:
         if config.debug:
             self.write("<div class=urldebug>%s</div>" % self.makeuri([]))
 
-    def body_start(self, title='', **args):
+    def body_start(self, title='', css_class=None,**args):
         self.html_head(title, **args)
         self.write('<body class="main %s">' % self.var("_body_class", ""))
+        if css_class:
+            self.write('<body class="main %s %s">' % (self.var("_body_class", ""), css_class))
 
     def bottom_focuscode(self):
         if self.focus_object:
@@ -919,7 +944,82 @@ class html:
             self.javascript("help_enable();")
         if self.final_javascript_code:
             self.javascript(self.final_javascript_code);
-        self.write("</body></html>\n")
+        result = """
+        <!-- JAVASCRIPTS -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <!-- JQUERY -->
+        <script src="theme/js/jquery/jquery-2.0.3.min.js"></script>
+        <!-- JQUERY UI-->
+        <script src="theme/js/jquery-ui-1.10.3.custom/js/jquery-ui-1.10.3.custom.min.js"></script>
+        <!-- BOOTSTRAP -->
+        <script src="theme/bootstrap-dist/js/bootstrap.min.js"></script>
+        
+            
+        <!-- DATE RANGE PICKER -->
+        <script src="theme/js/bootstrap-daterangepicker/moment.min.js"></script>
+        
+        <script src="theme/js/bootstrap-daterangepicker/daterangepicker.min.js"></script>
+        <!-- SLIMSCROLL -->
+        <script type="text/javascript" src="theme/js/jQuery-slimScroll-1.3.0/jquery.slimscroll.min.js"></script>
+        <script type="text/javascript" src="theme/js/jQuery-slimScroll-1.3.0/slimScrollHorizontal.min.js"></script>
+        <!-- BLOCK UI -->
+        <script type="text/javascript" src="theme/js/jQuery-BlockUI/jquery.blockUI.min.js"></script>
+
+        <!-- HUBSPOT MESSENGER -->
+        <script type="text/javascript" src="theme/js/hubspot-messenger/js/messenger.min.js"></script>
+        <script type="text/javascript" src="theme/js/hubspot-messenger/js/messenger-theme-flat.js"></script>
+        <script type="text/javascript" src="theme/js/hubspot-messenger/js/messenger-theme-future.js"></script>
+
+        <!-- TYPEHEAD -->
+        <script type="text/javascript" src="theme/js/typeahead/typeahead.min.js"></script>
+
+        <!-- AUTOSIZE -->
+        <script type="text/javascript" src="theme/js/autosize/jquery.autosize.min.js"></script>
+
+        <!-- COUNTABLE -->
+        <script type="text/javascript" src="theme/js/countable/jquery.simplyCountable.min.js"></script>
+
+        <!-- INPUT MASK -->
+        <script type="text/javascript" src="theme/js/bootstrap-inputmask/bootstrap-inputmask.min.js"></script>
+
+        <!-- FILE UPLOAD -->
+        <script type="text/javascript" src="theme/js/bootstrap-fileupload/bootstrap-fileupload.min.js"></script>
+
+        <!-- SELECT2 -->
+        <script type="text/javascript" src="theme/js/select2/select2.min.js"></script>
+
+        <!-- UNIFORM -->
+        <script type="text/javascript" src="theme/js/uniform/jquery.uniform.min.js"></script>
+
+        <!-- JQUERY UPLOAD -->
+        <!-- The Templates plugin is included to render the upload/download listings -->
+        <script src="theme/js/blueimp/javascript-template/tmpl.min.js"></script>
+        <!-- The Load Image plugin is included for the preview images and image resizing functionality -->
+        <script src="theme/js/blueimp/javascript-loadimg/load-image.min.js"></script>
+        <!-- The Canvas to Blob plugin is included for image resizing functionality -->
+        <script src="theme/js/blueimp/javascript-canvas-to-blob/canvas-to-blob.min.js"></script>
+        <!-- blueimp Gallery script -->
+        <script src="theme/js/blueimp/gallery/jquery.blueimp-gallery.min.js"></script>
+        <!-- The basic File Upload plugin -->
+        <script src="theme/js/jquery-upload/js/jquery.fileupload.min.js"></script>
+        <!-- The File Upload processing plugin -->
+        <script src="theme/js/jquery-upload/js/jquery.fileupload-process.min.js"></script>
+        <!-- The File Upload image preview & resize plugin -->
+        <script src="theme/js/jquery-upload/js/jquery.fileupload-image.min.js"></script>
+        <!-- The File Upload audio preview plugin -->
+        <script src="theme/js/jquery-upload/js/jquery.fileupload-audio.min.js"></script>
+        <!-- The File Upload video preview plugin -->
+        <script src="theme/js/jquery-upload/js/jquery.fileupload-video.min.js"></script>
+        <!-- The File Upload validation plugin -->
+        <script src="theme/js/jquery-upload/js/jquery.fileupload-validate.min.js"></script>
+        <!-- The File Upload user interface plugin -->
+        <script src="theme/js/jquery-upload/js/jquery.fileupload-ui.min.js"></script>
+        <!-- The main application script -->
+        <script src="theme/js/jquery-upload/js/main.js"></script>
+        <!-- COOKIE -->
+        <script type="text/javascript" src="theme/js/jQuery-Cookie/jquery.cookie.min.js"></script>
+        """
+        self.write("</body>" + result + "</html>\n")
 
     def footer(self):
         if self.output_format == "html":

@@ -216,7 +216,24 @@ def page_login(no_html_output = False):
 
 def normal_login_page(called_directly = True):
     html.set_render_headfoot(False)
-    html.header(_("Check_MK Multisite Login"), javascripts=[], stylesheets=["pages", "login"])
+    stylesheets = []
+    # stylesheets = ["pages", "login"]
+    stylesheets = ["theme/css/cloud-admin", 
+                    "theme/css/themes/default",
+                    "theme/css/responsive", 
+                    "theme/font-awesome/css/font-awesome.min",
+                    "theme/js/bootstrap-daterangepicker/daterangepicker-bs3",
+                    "theme/js/hubspot-messenger/css/messenger.min",
+                    "theme/js/hubspot-messenger/css/messenger-spinner.min",
+                    "theme/js/hubspot-messenger/css/messenger-theme-flat.min",
+                    "theme/js/jquery-ui-1.10.3.custom/css/custom-theme/jquery-ui-1.10.3.custom.min",
+                    "theme/js/bootstrap-switch/bootstrap-switch.min",
+                    "theme/css/flags/flags.min",
+                    "theme/css/fonts"
+                ]
+    html.header(_("Bhutan Telecom UNMP Login"), css_class="login", javascripts=[], stylesheets=stylesheets)
+
+    # html.body_start(title='UNMP Login', css_class="login")
 
     origtarget = html.var('_origtarget', '')
     if not origtarget and not html.req.myfile in [ 'login', 'logout' ]:
@@ -232,47 +249,121 @@ def normal_login_page(called_directly = True):
     # Never allow the login page to be opened in a frameset. Redirect top page to login page.
     # This will result in a full screen login page.
     html.javascript('''if(top != self) {
-    window.top.location.href = location;
-}''')
+        window.top.location.href = location;
+    }''')
 
     # When someone calls the login page directly and is already authed redirect to main page
     if html.req.myfile == 'login' and check_auth() != '':
         html.immediate_browser_redirect(0.5, origtarget and origtarget or 'index.py')
         return apache.OK
 
-    html.write("<div id=login>")
-    html.write("<img id=login_window src=\"images/login_window.png\">")
-    html.write("<div id=version>%s</div>" % defaults.check_mk_version)
+    result = """
+    <section>
+            <!-- LOGIN -->
+            <section class="visible" id="login">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-4 col-md-offset-4">
+                            <div class="login-box-plain">
+                                <div id="logo" style="width:304px; overflow:hidden;">
+                                    <a href="index.html"><img height="40" alt="logo name" src="logo.jpg"></a>
+                                </div>
+                                <h2 class="bigintro">Sign In</h2>
+                                <div class="divide-40"></div>
+    """
+    html.write(result)
 
-    html.begin_form("login", method = 'POST', add_transid = False)
+    html.begin_form("", method = 'POST', add_transid = False)
     html.hidden_field('_login', '1')
     html.hidden_field('_origtarget', htmllib.attrencode(origtarget))
-    html.write("<label id=label_user class=legend for=_username>%s:</label><br />" % _('Username'))
-    html.text_input("_username", id="input_user")
-    html.write("<label id=label_pass class=legend for=_password>%s:</label><br />" % _('Password'))
-    html.password_input("_password", id="input_pass", size=None)
+    
+    result = """
+                                  <div class="form-group">
+    """
+    html.write(result)
 
-    if html.has_user_errors():
-        html.write('<div id=login_error>')
-        html.show_user_errors()
-        html.write('</div>')
+    html.write("<label id=label_user class=legend for=_username>%s:</label><br />" % _('Username'))
+
+    result = """
+                <i class="fa fa-envelope"></i>
+    """
+    html.write(result)
+
+    html.text_input("_username", id="input_user")
+
+    result = """
+                                  </div>
+                                  <div class="form-group">
+    """
+    html.write(result)
+
+    html.write("<label id=label_pass class=legend for=_password>%s:</label><br />" % _('Password'))
+    
+    result = """
+                <i class="fa fa-lock"></i>
+    """
+    html.write(result)
+
+    html.password_input("_password", id="input_pass", size=None)
+        
+    result = """
+                                  </div>
+    """
+    html.write(result)
+
+    html.set_focus('_username')
+
+    result = """
+                                <div class="form-actions">
+    """
+    html.write(result)
 
     html.write("<div id=button_text>")
     html.image_button("_login", _('Login'))
-    html.write("</div>")
+    
+    result = """
+                                </div>
+    """
+    html.write(result)
 
-    html.write("<div id=foot>Version: %s - &copy; "
-               "<a href=\"http://mathias-kettner.de\">Mathias Kettner</a><br><br>" % defaults.check_mk_version)
-    html.write(_("You can use, modify and distribute Check_MK under the terms of the <a href='%s'>"
-                 "GNU GPL Version 2</a>." % "http://mathias-kettner.de/gpl.html"))
-    html.write("</div>")
-
-    html.write("</div>")
-    html.set_focus('_username')
     html.hidden_fields()
     html.end_form()
+    result = """
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!--/LOGIN -->
+    </section>
+    """
+    html.write(result)
 
     html.footer()
+
+    if html.has_user_errors():
+
+        html.write('<div id=login_error style="display:none">')
+        html.show_user_errors()
+        html.write('</div>')
+
+        show_error = """
+        <script>
+        var msg = $("#login_error").find(".error").text();
+        Messenger.options = {
+            extraClasses: 'messenger-fixed messenger-on-top messenger-on-right',
+            theme: 'flat'
+        }
+        Messenger().post({
+          message: msg,
+          type: 'error',
+          showCloseButton: true
+        });
+        </script>
+        """
+        html.write(show_error)
+
+
     return apache.OK
 
 def page_logout():
