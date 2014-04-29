@@ -869,9 +869,9 @@ class html:
             if not self.header_sent:
                 self.html_head(title, **args)
                 if css_class:
-                    self.write('<body class="main %s %s">' % (self.var("_body_class", ""), css_class))
+                    self.write('<body class="%s %s">' % (self.var("_body_class", ""), css_class))
                 else:
-                    self.write('<body class="main %s">' % self.var("_body_class", ""))
+                    self.write('<body class="%s">' % self.var("_body_class", ""))
                 self.header_sent = True
                 if self.render_headfoot:
                     self.top_heading(title)
@@ -885,23 +885,300 @@ class html:
             login_text += ')'
         else:
             login_text = _("not logged in")
-        self.write('<table class=header><tr><td width="*" class=heading>')
-        self.write('<a href="#" onfocus="if (this.blur) this.blur();" '
-                   'onclick="this.innerHTML=\'%s\'; document.location.reload();">%s</a></td>' %
-                   (_("Reloading..."), title))
-        self.write('<td style="min-width:240px" class=right><span id=headinfo></span>%s &nbsp; <b id=headertime>%s</b>' %
-                   (login_text, time.strftime("%H:%M")))
-        try:
-            self.help_visible = config.load_user_file("help", False)  # cache for later usage
-        except:
-            self.help_visible = False
+        # self.write('<table class=header><tr><td width="*" class=heading>')
+        # self.write('<a href="#" onfocus="if (this.blur) this.blur();" '
+        #            'onclick="this.innerHTML=\'%s\'; document.location.reload();">%s</a></td>' %
+        #            (_("Reloading..."), title))
+        # self.write('<td style="min-width:240px" class=right><span id=headinfo></span>%s &nbsp; <b id=headertime>%s</b>' %
+        #            (login_text, time.strftime("%H:%M")))
 
-        cssclass = self.help_visible and "active" or "passive"
-        self.write('<a id=helpbutton class=%s href="#" onclick="help_toggle();" style="display: none"></a>' %
-            cssclass)
-        self.write("%s</td></tr></table>" %
-                   _("<a href=\"http://mathias-kettner.de\"><img src=\"images/mk_logo_small.gif\"/></a>"))
-        self.write("<hr class=header>\n")
+        
+        # try:
+        #     self.help_visible = config.load_user_file("help", False)  # cache for later usage
+        # except:
+        #     self.help_visible = False
+
+        # cssclass = self.help_visible and "active" or "passive"
+        # self.write('<a id=helpbutton class=%s href="#" onclick="help_toggle();" style="display: none"></a>' %
+        #     cssclass)
+        # self.write("%s</td></tr></table>" %
+        #            _("<a href=\"http://mathias-kettner.de\"><img src=\"images/mk_logo_small.gif\"/></a>"))
+        # self.write("<hr class=header>\n")
+        username = "%s" %(login_text)
+        result = """
+        <!-- HEADER -->
+        <header class="navbar clearfix" id="header">
+            <div class="container">
+                    <!-- BEGIN TOP NAVIGATION MENU -->                  
+                    <ul class="nav navbar-nav pull-right">
+                        <!-- BEGIN NOTIFICATION DROPDOWN -->    
+                        <li class="dropdown" id="header-notification">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-bell"></i>
+                                <span class="badge">7</span>                        
+                            </a>
+                            <ul class="dropdown-menu notification">
+                                <li class="dropdown-title">
+                                    <span><i class="fa fa-bell"></i> 7 Notifications</span>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <span class="label label-success"><i class="fa fa-user"></i></span>
+                                        <span class="body">
+                                            <span class="message">5 users online. </span>
+                                            <span class="time">
+                                                <i class="fa fa-clock-o"></i>
+                                                <span>Just now</span>
+                                            </span>
+                                        </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <span class="label label-primary"><i class="fa fa-comment"></i></span>
+                                        <span class="body">
+                                            <span class="message">Martin commented.</span>
+                                            <span class="time">
+                                                <i class="fa fa-clock-o"></i>
+                                                <span>19 mins</span>
+                                            </span>
+                                        </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <span class="label label-warning"><i class="fa fa-lock"></i></span>
+                                        <span class="body">
+                                            <span class="message">DW1 server locked.</span>
+                                            <span class="time">
+                                                <i class="fa fa-clock-o"></i>
+                                                <span>32 mins</span>
+                                            </span>
+                                        </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <span class="label label-info"><i class="fa fa-twitter"></i></span>
+                                        <span class="body">
+                                            <span class="message">Twitter connected.</span>
+                                            <span class="time">
+                                                <i class="fa fa-clock-o"></i>
+                                                <span>55 mins</span>
+                                            </span>
+                                        </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <span class="label label-danger"><i class="fa fa-heart"></i></span>
+                                        <span class="body">
+                                            <span class="message">Jane liked. </span>
+                                            <span class="time">
+                                                <i class="fa fa-clock-o"></i>
+                                                <span>2 hrs</span>
+                                            </span>
+                                        </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <span class="label label-warning"><i class="fa fa-exclamation-triangle"></i></span>
+                                        <span class="body">
+                                            <span class="message">Database overload.</span>
+                                            <span class="time">
+                                                <i class="fa fa-clock-o"></i>
+                                                <span>6 hrs</span>
+                                            </span>
+                                        </span>
+                                    </a>
+                                </li>
+                                <li class="footer">
+                                    <a href="#">See all notifications <i class="fa fa-arrow-circle-right"></i></a>
+                                </li>
+                            </ul>
+                        </li>
+                        <!-- END NOTIFICATION DROPDOWN -->
+                        <!-- BEGIN INBOX DROPDOWN -->
+                        <li class="dropdown" id="header-message">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="fa fa-envelope"></i>
+                            <span class="badge">3</span>
+                            </a>
+                            <ul class="dropdown-menu inbox">
+                                <li class="dropdown-title">
+                                    <span><i class="fa fa-envelope-o"></i> 3 Messages</span>
+                                    <span class="compose pull-right tip-right" title="Compose message"><i class="fa fa-pencil-square-o"></i></span>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <img src="img/avatars/avatar2.jpg" alt="" />
+                                        <span class="body">
+                                            <span class="from">Jane Doe</span>
+                                            <span class="message">
+                                            Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse mole ...
+                                            </span> 
+                                            <span class="time">
+                                                <i class="fa fa-clock-o"></i>
+                                                <span>Just Now</span>
+                                            </span>
+                                        </span>
+                                         
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <img src="img/avatars/avatar1.jpg" alt="" />
+                                        <span class="body">
+                                            <span class="from">Vince Pelt</span>
+                                            <span class="message">
+                                            Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse mole ...
+                                            </span> 
+                                            <span class="time">
+                                                <i class="fa fa-clock-o"></i>
+                                                <span>15 min ago</span>
+                                            </span>
+                                        </span>
+                                         
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <img src="img/avatars/avatar8.jpg" alt="" />
+                                        <span class="body">
+                                            <span class="from">Debby Doe</span>
+                                            <span class="message">
+                                            Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse mole ...
+                                            </span> 
+                                            <span class="time">
+                                                <i class="fa fa-clock-o"></i>
+                                                <span>2 hours ago</span>
+                                            </span>
+                                        </span>
+                                         
+                                    </a>
+                                </li>
+                                <li class="footer">
+                                    <a href="#">See all messages <i class="fa fa-arrow-circle-right"></i></a>
+                                </li>
+                            </ul>
+                        </li>
+                        <!-- END INBOX DROPDOWN -->
+                        <!-- BEGIN TODO DROPDOWN -->
+                        <li class="dropdown" id="header-tasks">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="fa fa-tasks"></i>
+                            <span class="badge">3</span>
+                            </a>
+                            <ul class="dropdown-menu tasks">
+                                <li class="dropdown-title">
+                                    <span><i class="fa fa-check"></i> 6 tasks in progress</span>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <span class="header clearfix">
+                                            <span class="pull-left">Software Update</span>
+                                            <span class="pull-right">60%</span>
+                                        </span>
+                                        <div class="progress">
+                                          <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+                                            <span class="sr-only">60% Complete</span>
+                                          </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <span class="header clearfix">
+                                            <span class="pull-left">Software Update</span>
+                                            <span class="pull-right">25%</span>
+                                        </span>
+                                        <div class="progress">
+                                          <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%;">
+                                            <span class="sr-only">25% Complete</span>
+                                          </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <span class="header clearfix">
+                                            <span class="pull-left">Software Update</span>
+                                            <span class="pull-right">40%</span>
+                                        </span>
+                                        <div class="progress progress-striped">
+                                          <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%;">
+                                            <span class="sr-only">40% Complete</span>
+                                          </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <span class="header clearfix">
+                                            <span class="pull-left">Software Update</span>
+                                            <span class="pull-right">70%</span>
+                                        </span>
+                                        <div class="progress progress-striped active">
+                                          <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width: 70%;">
+                                            <span class="sr-only">70% Complete</span>
+                                          </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <span class="header clearfix">
+                                            <span class="pull-left">Software Update</span>
+                                            <span class="pull-right">65%</span>
+                                        </span>
+                                        <div class="progress">
+                                          <div class="progress-bar progress-bar-success" style="width: 35%">
+                                            <span class="sr-only">35% Complete (success)</span>
+                                          </div>
+                                          <div class="progress-bar progress-bar-warning" style="width: 20%">
+                                            <span class="sr-only">20% Complete (warning)</span>
+                                          </div>
+                                          <div class="progress-bar progress-bar-danger" style="width: 10%">
+                                            <span class="sr-only">10% Complete (danger)</span>
+                                          </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="footer">
+                                    <a href="#">See all tasks <i class="fa fa-arrow-circle-right"></i></a>
+                                </li>
+                            </ul>
+                        </li>
+                        <!-- END TODO DROPDOWN -->
+                        <!-- BEGIN USER LOGIN DROPDOWN -->
+                        <li class="dropdown user" id="header-user">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <span class="username">
+        """
+        result += username
+        result +="""
+                                </span>
+
+                                <i class="fa fa-angle-down"></i>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#"><i class="fa fa-user"></i> My Profile</a></li>
+                                <li><a href="#"><i class="fa fa-cog"></i> Account Settings</a></li>
+                                <li><a href="#"><i class="fa fa-eye"></i> Privacy Settings</a></li>
+                                <li><a href="logout.py"><i class="fa fa-power-off"></i> Log Out</a></li>
+                            </ul>
+                        </li>
+                        <!-- END USER LOGIN DROPDOWN -->
+                    </ul>
+                    <!-- END TOP NAVIGATION MENU -->
+            </div>
+        </header>
+        <!--/HEADER -->
+        
+        """
+        
+        self.write(result)
         if config.debug:
             self.write("<div class=urldebug>%s</div>" % self.makeuri([]))
 
@@ -910,6 +1187,8 @@ class html:
         self.write('<body class="main %s">' % self.var("_body_class", ""))
         if css_class:
             self.write('<body class="main %s %s">' % (self.var("_body_class", ""), css_class))
+        
+        
 
     def bottom_focuscode(self):
         if self.focus_object:

@@ -134,9 +134,60 @@ def render_dashboard(name):
     elif wato_folder is not None:
         title = wato.api.get_folder_title(wato_folder) + " - " + title
 
-    html.header(title, javascripts=["dashboard"], stylesheets=["pages", "dashboard", "status", "views"])
+    stylesheets = ["pages", "dashboard", "status", "views"]
 
-    html.write("<div id=dashboard class=\"dashboard_%s\">\n" % name) # Container of all dashlets
+    stylesheets += ["theme/css/cloud-admin", 
+                    "theme/css/themes/default",
+                    "theme/css/responsive", 
+                    "theme/font-awesome/css/font-awesome.min",
+                    "theme/js/bootstrap-daterangepicker/daterangepicker-bs3",
+                    "theme/js/hubspot-messenger/css/messenger.min",
+                    "theme/js/hubspot-messenger/css/messenger-spinner.min",
+                    "theme/js/hubspot-messenger/css/messenger-theme-flat.min",
+                    "theme/js/jquery-ui-1.10.3.custom/css/custom-theme/jquery-ui-1.10.3.custom.min",
+                    "theme/js/bootstrap-switch/bootstrap-switch.min",
+                    "theme/css/flags/flags.min",
+                    "theme/css/fonts"
+                ]
+
+    html.header(title, javascripts=["dashboard"], stylesheets=stylesheets)
+    html.write("""<div class="col-lg-12" id="content">""")
+    result = """
+        
+                        <!-- PAGE HEADER-->
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="page-header">
+                                    <!-- STYLER -->
+                                    
+                                    <!-- /STYLER -->
+                                    <!-- BREADCRUMBS -->
+                                    <ul class="breadcrumb">
+                                        <li>
+                                            <i class="fa fa-home"></i>
+                                            <a href="index.html">Home</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Other Pages</a>
+                                        </li>
+                                        <li>Blank Page</li>
+                                    </ul>
+                                    <!-- /BREADCRUMBS -->
+                                    <div class="clearfix">
+                                        <h3 class="content-title pull-left">Blank Page</h3>
+                                    </div>
+                                    <div class="description">Blank Page</div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /PAGE HEADER -->
+                    
+        """
+    html.write(result)
+    html.write("""  <div class="row"> 
+                    <div class="col-sm-12">
+                """)
+    # html.write("<div id=dashboard class=\"dashboard_%s\">\n" % name) # Container of all dashlets
 
     refresh_dashlets = [] # Dashlets with automatic refresh, for Javascript
     for nr, dashlet in enumerate(board["dashlets"]):
@@ -156,11 +207,16 @@ def render_dashboard(name):
         render_dashlet(nr, dashlet, wato_folder)
 
     html.write("</div>\n")
+    html.write("""  </div>
+                    </div>
+                """)
+    # html.write("""</div>""")
 
     # Put list of all autorefresh-dashlets into Javascript and also make sure,
     # that the dashbaord is painted initially. The resize handler will make sure
     # that every time the user resizes the browser window the layout will be re-computed
     # and all dashlets resized to their new positions and sizes.
+
     html.javascript("""
 var header_height = %d;
 var screen_margin = %d;
@@ -169,9 +225,9 @@ var dashlet_padding = Array%s;
 var corner_overlap = %d;
 var refresh_dashlets = %r;
 var dashboard_name = '%s';
-set_dashboard_size();
-window.onresize = function () { set_dashboard_size(); }
-window.onload = function () { set_dashboard_size(); }
+//set_dashboard_size();
+//window.onresize = function () { set_dashboard_size(); }
+//window.onload = function () { set_dashboard_size(); }
 dashboard_scheduler(1);
     """ % (header_height, screen_margin, title_height, dashlet_padding,
            corner_overlap, refresh_dashlets, name))
@@ -184,46 +240,69 @@ dashboard_scheduler(1);
 # actual dashlet content. The margin between the inner and outer div is
 # used for stylish layout stuff (shadows, etc.)
 def render_dashlet(nr, dashlet, wato_folder):
+    html.write("""
+        <div class="col-md-6">
+        """)
+    # html.write('<div class=dashlet id="dashlet_%d">' % nr)
+    # # render shadow
+    # # if dashlet.get("shadow", True):
+    # #     for p in [ "nw", "ne", "sw", "se", "n", "s", "w", "e" ]:
+    # #         html.write('<img id="dashadow_%s_%d" class="shadow %s" src="images/dashadow-%s.png">' %
+    # #             (p, nr, p, p))
 
-    html.write('<div class=dashlet id="dashlet_%d">' % nr)
-    # render shadow
-    if dashlet.get("shadow", True):
-        for p in [ "nw", "ne", "sw", "se", "n", "s", "w", "e" ]:
-            html.write('<img id="dashadow_%s_%d" class="shadow %s" src="images/dashadow-%s.png">' %
-                (p, nr, p, p))
+    # if dashlet.get("title"):
+    #     url = dashlet.get("title_url", None)
+    #     if url:
+    #         title = '<a href="%s">%s</a>' % (url, dashlet["title"])
+    #     else:
+    #         title = dashlet["title"]
+    #     html.write('<div class="title" id="dashlet_title_%d">%s</div>' % (nr, title))
+    # if dashlet.get("background", True):
+    #     bg = " background"
+    # else:
+    #     bg = ""
+    # html.write('<div class="dashlet_inner%s" id="dashlet_inner_%d">' % (bg, nr))
 
-    if dashlet.get("title"):
-        url = dashlet.get("title_url", None)
-        if url:
-            title = '<a href="%s">%s</a>' % (url, dashlet["title"])
-        else:
-            title = dashlet["title"]
-        html.write('<div class="title" id="dashlet_title_%d">%s</div>' % (nr, title))
-    if dashlet.get("background", True):
-        bg = " background"
-    else:
-        bg = ""
-    html.write('<div class="dashlet_inner%s" id="dashlet_inner_%d">' % (bg, nr))
+    # html.write( "%s" % dashlet)
 
-    # Optional way to render a dynamic iframe URL
+    # # Optional way to render a dynamic iframe URL
     if "iframefunc" in dashlet:
         dashlet["iframe"] = dashlet["iframefunc"]()
 
-    # The method "view" is a shortcut for "iframe" with a certain url
+    # # The method "view" is a shortcut for "iframe" with a certain url
     if "view" in dashlet:
         dashlet["iframe"] = "view.py?view_name=%s&_display_options=HRSIXL&_body_class=dashlet" % dashlet["view"]
 
-    # The content is rendered only if it is fixed. In the
-    # other cases the initial (re)-size will paint the content.
-    if "content" in dashlet: # fixed content
-        html.write(dashlet["content"])
-    elif "iframe" in dashlet: # fixed content containing iframe
-        # Fix of iPad >:-P
-        html.write('<div style="width: 100%; height: 100%; -webkit-overflow-scrolling:touch; overflow: auto;">')
-        html.write('<iframe allowTransparency="true" frameborder="0" width="100%%" height="100%%" src="%s"></iframe>' %
-           add_wato_folder_to_url(dashlet["iframe"], wato_folder))
-        html.write('</div>')
-    html.write("</div></div>\n")
+    # # The content is rendered only if it is fixed. In the
+    # # other cases the initial (re)-size will paint the content.
+    # if "content" in dashlet: # fixed content
+    #     html.write(dashlet["content"])
+    # elif "iframe" in dashlet: # fixed content containing iframe
+    #     # Fix of iPad >:-P
+    #     html.write('<div style="width: 100%; height: 100%; -webkit-overflow-scrolling:touch; overflow: auto;">')
+    #     html.write('<iframe allowTransparency="true" frameborder="0" width="100%%" height="100%%" src="%s"></iframe>' %
+    #        add_wato_folder_to_url(dashlet["iframe"], wato_folder))
+    #     html.write('</div>')
+
+    html.write("""
+        <div class="box border inverse">
+            <div class="box-title">
+                <h4><i class="fa fa-adjust"></i>%s</h4>
+                <div class="tools hidden-xs">
+                    <a class="config" data-toggle="modal" href="#box-config">
+                        <i class="fa fa-cog"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="box-body">
+                <div class="chart" id="dashlet_%s" style="padding: 0px; position: relative;">
+                    %s
+                </div>
+            </div>
+        </div>
+        """ % (dashlet["title"], nr, dashlet))
+
+    html.write("</div>\n")
 
 # Here comes the brain stuff: An intelligent liquid layout algorithm.
 # It is called via ajax, mainly because I was not eager to code this
