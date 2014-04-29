@@ -152,7 +152,7 @@ def render_dashboard(name):
 
     javascripts = []
     javascripts += ["dashboard"]
-    javascripts += ["highcharts/js/highcharts"]
+
     html.header(title, javascripts=javascripts, stylesheets=stylesheets)
     html.write("""<div class="col-lg-12" id="content">""")
     result = """
@@ -547,7 +547,7 @@ def dashlet_hoststats():
     ]
     filter = "Filter: custom_variable_names < _REALNAME\n"
 
-    render_statistics("hoststats", "hosts", table, filter)
+    render_statistics("hoststats", "hosts", table, filter, "Host Statistics")
 
 def dashlet_servicestats():
     table = [
@@ -602,10 +602,10 @@ def dashlet_servicestats():
     ]
     filter = "Filter: host_custom_variable_names < _REALNAME\n"
 
-    render_statistics("servicestats", "services", table, filter)
+    render_statistics("servicestats", "services", table, filter, "Service Statistics")
 
 
-def render_statistics(pie_id, what, table, filter):
+def render_statistics(pie_id, what, table, filter, title=None):
     html.write("<div class=stats>")
     pie_diameter     = 130
     pie_left_aspect  = 0.5
@@ -662,48 +662,18 @@ def render_statistics(pie_id, what, table, filter):
 
     # html.write("</table>")
 
+    data = []
+    for pie in pies:
+        typeof = pie[0][0]
+        count = pie[1]
+        data.append([ typeof, count])
+
+
+
     html.write("</div>")
     html.javascript("""
-        var ace = "%s_stats";
-        $("#"+ace).highcharts({
-            chart: {
-                plotBackgroundColor: null,
-                plotBorderWidth: null,
-                plotShadow: false
-            },
-            title: {
-                text: 'Browser market shares at a specific website, 2014'
-            },
-            tooltip: {
-                pointFormat: '{series.name}: <b>{point.percentage:.1f}%%</b>'
-            },
-            plotOptions: {
-                pie: {
-                    allowPointSelect: true,
-                    cursor: 'pointer',
-                    dataLabels: {
-                        enabled: true,
-                        format: '<b>{point.name}</b>: {point.percentage:.1f} %%',
-                        style: {
-                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
-                        }
-                    }
-                }
-            },
-            series: [{
-                type: 'pie',
-                name: 'Browser share',
-                data: [
-                    ['Firefox',   45.0],
-                    ['IE',       26.8],
-                    ['Chrome',  12.8 ],
-                    ['Safari',    8.5],
-                    ['Opera',     6.2],
-                    ['Others',   0.7]
-                ]
-            }]
-        });
-    """ % (pie_id))
+        draw_hchart(id="%s", type="pie" , title="%s", name="%s", data=%s);
+    """ % (pie_id, title, title, data))
 
 def dashlet_pnpgraph():
     render_pnpgraph(

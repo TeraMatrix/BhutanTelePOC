@@ -1297,6 +1297,13 @@ class html:
         <script src="theme/js/jquery-upload/js/main.js"></script>
         <!-- COOKIE -->
         <script type="text/javascript" src="theme/js/jQuery-Cookie/jquery.cookie.min.js"></script>
+
+        <!--highcharts -->
+        <script type="text/javascript" src="js/highcharts/js/highcharts.js"></script>
+
+        <!--highcharts custome dashboards-->
+        <script type="text/javascript" src="js/highchart_dashboard.js"></script>
+                
         """
         self.write("</body>" + result + "</html>\n")
 
