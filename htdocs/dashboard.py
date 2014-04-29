@@ -150,7 +150,10 @@ def render_dashboard(name):
                     "theme/css/fonts"
                 ]
 
-    html.header(title, javascripts=["dashboard"], stylesheets=stylesheets)
+    javascripts = []
+    javascripts += ["dashboard"]
+    javascripts += ["highcharts/js/highcharts"]
+    html.header(title, javascripts=javascripts, stylesheets=stylesheets)
     html.write("""<div class="col-lg-12" id="content">""")
     result = """
         
@@ -165,16 +168,12 @@ def render_dashboard(name):
                                     <ul class="breadcrumb">
                                         <li>
                                             <i class="fa fa-home"></i>
-                                            <a href="index.html">Home</a>
                                         </li>
-                                        <li>
-                                            <a href="#">Other Pages</a>
-                                        </li>
-                                        <li>Blank Page</li>
+                                        <li>Dashboard</li>
                                     </ul>
                                     <!-- /BREADCRUMBS -->
                                     <div class="clearfix">
-                                        <h3 class="content-title pull-left">Blank Page</h3>
+                                        <h3 class="content-title pull-left">Dashboard</h3>
                                     </div>
                                     <div class="description">Blank Page</div>
                                 </div>
@@ -273,16 +272,6 @@ def render_dashlet(nr, dashlet, wato_folder):
     if "view" in dashlet:
         dashlet["iframe"] = "view.py?view_name=%s&_display_options=HRSIXL&_body_class=dashlet" % dashlet["view"]
 
-    # # The content is rendered only if it is fixed. In the
-    # # other cases the initial (re)-size will paint the content.
-    # if "content" in dashlet: # fixed content
-    #     html.write(dashlet["content"])
-    # elif "iframe" in dashlet: # fixed content containing iframe
-    #     # Fix of iPad >:-P
-    #     html.write('<div style="width: 100%; height: 100%; -webkit-overflow-scrolling:touch; overflow: auto;">')
-    #     html.write('<iframe allowTransparency="true" frameborder="0" width="100%%" height="100%%" src="%s"></iframe>' %
-    #        add_wato_folder_to_url(dashlet["iframe"], wato_folder))
-    #     html.write('</div>')
 
     html.write("""
         <div class="box border inverse">
@@ -296,11 +285,26 @@ def render_dashlet(nr, dashlet, wato_folder):
             </div>
             <div class="box-body">
                 <div class="chart" id="dashlet_%s" style="padding: 0px; position: relative;">
-                    %s
+    """ % (dashlet["title"], nr))
+    # # The content is rendered only if it is fixed. In the
+    # # other cases the initial (re)-size will paint the content.
+    if "content" in dashlet: # fixed content
+        html.write(dashlet["content"])
+    elif "iframe" in dashlet: # fixed content containing iframe
+        # Fix of iPad >:-P
+        html.write('<div style="width: 100%; height: 100%; -webkit-overflow-scrolling:touch; overflow: auto;">')
+        html.write('<iframe allowTransparency="true" frameborder="0" width="100%%" height="100%%" src="%s"></iframe>' %
+           add_wato_folder_to_url(dashlet["iframe"], wato_folder))
+        html.write('</div>')
+    
+    html.write('<div class="dashlet_inner" id="dashlet_inner_%d">' % (nr))
+    html.write("</div>")
+
+    html.write("""
                 </div>
             </div>
         </div>
-        """ % (dashlet["title"], nr, dashlet))
+        """ )
 
     html.write("</div>\n")
 
@@ -632,96 +636,74 @@ def render_statistics(pie_id, what, table, filter):
     pies = zip(table, result)
     total = sum([x[1] for x in pies])
 
-    html.write('<canvas class=pie width=%d height=%d id="%s_stats" style="float: left"></canvas>' %
+    html.write('<div class=pie width=%d height=%d id="%s_stats" style="float: left"></div>' %
             (pie_diameter, pie_diameter, pie_id))
-    html.write('<img src="images/globe.png" class="globe">')
+    # html.write('<img src="images/globe.png" class="globe">')
 
-    html.write('<table class="hoststats%s" style="float:left">' % (
-        len(pies) > 1 and " narrow" or ""))
-    table_entries = pies
-    while len(table_entries) < 6:
-        table_entries = table_entries + [ (("", "#95BBCD", "", ""), "&nbsp;") ]
-    table_entries.append(((_("Total"), "", "all%s" % what, ""), total))
-    for (name, color, viewurl, query), count in table_entries:
-        url = "view.py?view_name=" + viewurl + "&filled_in=filter&search=1&wato_folder=" \
-              + htmllib.urlencode(html.var("wato_folder", ""))
-        if host_contact_group:
-            url += '&opthost_contactgroup=' + host_contact_group
-        if service_contact_group:
-            url += '&optservice_contactgroup=' + service_contact_group
-        html.write('<tr><th><a href="%s">%s</a></th>' % (url, name))
-        style = ''
-        if color:
-            style = ' style="background-color: %s"' % color
-        html.write('<td class=color%s>'
-                   '</td><td><a href="%s">%s</a></td></tr>' % (style, url, count))
+    # html.write('<table class="hoststats%s" style="float:left">' % (
+    #     len(pies) > 1 and " narrow" or ""))
+    # table_entries = pies
+    # while len(table_entries) < 6:
+    #     table_entries = table_entries + [ (("", "#95BBCD", "", ""), "&nbsp;") ]
+    # table_entries.append(((_("Total"), "", "all%s" % what, ""), total))
+    # for (name, color, viewurl, query), count in table_entries:
+    #     url = "view.py?view_name=" + viewurl + "&filled_in=filter&search=1&wato_folder=" \
+    #           + htmllib.urlencode(html.var("wato_folder", ""))
+    #     if host_contact_group:
+    #         url += '&opthost_contactgroup=' + host_contact_group
+    #     if service_contact_group:
+    #         url += '&optservice_contactgroup=' + service_contact_group
+    #     html.write('<tr><th><a href="%s">%s</a></th>' % (url, name))
+    #     style = ''
+    #     if color:
+    #         style = ' style="background-color: %s"' % color
+    #     html.write('<td class=color%s>'
+    #                '</td><td><a href="%s">%s</a></td></tr>' % (style, url, count))
 
-    html.write("</table>")
-
-    r = 0.0
-    pie_parts = []
-    if total > 0:
-        # Count number of non-empty classes
-        num_nonzero = 0
-        for info, value in pies:
-            if value > 0:
-                num_nonzero += 1
-
-        # Each non-zero class gets at least a view pixels of visible thickness.
-        # We reserve that space right now. All computations are done in percent
-        # of the radius.
-        separator = 0.02                                    # 3% of radius
-        remaining_separatorspace = num_nonzero * separator  # space for separators
-        remaining_radius = 1 - remaining_separatorspace     # remaining space
-        remaining_part = 1.0 # keep track of remaining part, 1.0 = 100%
-
-        # Loop over classes, begin with most outer sphere. Inner spheres show
-        # worse states and appear larger to the user (which is the reason we
-        # are doing all this stuff in the first place)
-        for (name, color, viewurl, q), value in pies[::1]:
-            if value > 0 and remaining_part > 0: # skip empty classes
-
-                # compute radius of this sphere *including all inner spheres!* The first
-                # sphere always gets a radius of 1.0, of course.
-                radius = remaining_separatorspace + remaining_radius * (remaining_part ** (1/3.0))
-                pie_parts.append('chart_pie("%s", %f, %f, %r, true);' % (pie_id, pie_right_aspect, radius, color))
-                pie_parts.append('chart_pie("%s", %f, %f, %r, false);' % (pie_id, pie_left_aspect, radius, color))
-
-                # compute relative part of this class
-                part = float(value) / total # ranges from 0 to 1
-                remaining_part           -= part
-                remaining_separatorspace -= separator
-
+    # html.write("</table>")
 
     html.write("</div>")
     html.javascript("""
-function chart_pie(pie_id, x_scale, radius, color, right_side) {
-    var context = document.getElementById(pie_id + "_stats").getContext('2d');
-    if (!context)
-        return;
-    var pie_x = %(x)f;
-    var pie_y = %(y)f;
-    var pie_d = %(d)f;
-    context.fillStyle = color;
-    context.save();
-    context.translate(pie_x, pie_y);
-    context.scale(x_scale, 1);
-    context.beginPath();
-    if(right_side)
-        context.arc(0, 0, (pie_d / 2) * radius, 1.5 * Math.PI, 0.5 * Math.PI, false);
-    else
-        context.arc(0, 0, (pie_d / 2) * radius, 0.5 * Math.PI, 1.5 * Math.PI, false);
-    context.closePath();
-    context.fill();
-    context.restore();
-    context = null;
-}
-
-
-if (has_canvas_support()) {
-    %(p)s
-}
-""" % { "x" : pie_diameter / 2, "y": pie_diameter/2, "d" : pie_diameter, 'p': '\n'.join(pie_parts) })
+        var ace = "%s_stats";
+        $("#"+ace).highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false
+            },
+            title: {
+                text: 'Browser market shares at a specific website, 2014'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '<b>{point.name}</b>: {point.percentage:.1f} %%',
+                        style: {
+                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                        }
+                    }
+                }
+            },
+            series: [{
+                type: 'pie',
+                name: 'Browser share',
+                data: [
+                    ['Firefox',   45.0],
+                    ['IE',       26.8],
+                    ['Chrome',  12.8 ],
+                    ['Safari',    8.5],
+                    ['Opera',     6.2],
+                    ['Others',   0.7]
+                ]
+            }]
+        });
+    """ % (pie_id))
 
 def dashlet_pnpgraph():
     render_pnpgraph(

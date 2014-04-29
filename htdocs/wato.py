@@ -2226,7 +2226,6 @@ def show_service_table(host, firsttime):
         first = True
         trclass = "even"
         for st, ct, checkgroup, item, paramstring, params, descr, state, output, perfdata in table:
-            item = htmllib.attrencode(item or 'None')
             if state_type != st:
                 continue
             if first:
@@ -2246,8 +2245,7 @@ def show_service_table(host, firsttime):
 
             # Status, Checktype, Item, Description, Check Output
             html.write("<td class=\"%s\">%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td>" %
-                    (stateclass, statename, ct, item,
-                     htmllib.attrencode(descr), htmllib.attrencode(output)))
+                    (stateclass, statename, ct, item, descr, output))
 
             # Icon for Rule editor, Check parameters
             html.write("<td>")
@@ -2268,6 +2266,8 @@ def show_service_table(host, firsttime):
                     rulespec["valuespec"].validate_value(params, "")
                     paramtext = rulespec["valuespec"].value_to_text(params)
                 except Exception, e:
+                    if config.debug:
+                        raise
                     paramtext = _("Invalid check parameter: %s!") % e
                     paramtext += _(" The parameter is: %r") % (params,)
 
@@ -5088,23 +5088,19 @@ def mode_snapshot(phase):
                 make_action_link([("mode", "snapshot"),("_factory_reset","Yes")]), "factoryreset")
         return
 
-    snapshots = []
-    if os.path.exists(snapshot_dir):
-        for f in os.listdir(snapshot_dir):
-            snapshots.append(f)
-    snapshots.sort(reverse=True)
-
-    if phase == "action":
+    elif phase == "action":
         if html.has_var("_download_file"):
             download_file = html.var("_download_file")
+            if not download_file.startswith('wato-snapshot') and download_file != 'latest':
+                raise MKUserError(None, _("Invalid download file specified."))
 
             # Find the latest snapshot file
             if download_file == 'latest':
+                snapshots = os.listdir(snapshot_dir)
+                snapshots.sort()
                 if not snapshots:
                     return False
                 download_file = snapshots[-1]
-            elif download_file not in snapshots:
-                raise MKUserError(None, _("Invalid download file specified."))
 
             download_path = os.path.join(snapshot_dir, download_file)
             if os.path.exists(download_path):
@@ -5137,13 +5133,9 @@ def mode_snapshot(phase):
         # delete file
         elif html.has_var("_delete_file"):
             delete_file = html.var("_delete_file")
-
-            if delete_file not in snapshots:
-                raise MKUserError(None, _("Invalid file specified."))
-
             c = wato_confirm(_("Confirm deletion of snapshot"),
                              _("Are you sure you want to delete the snapshot <br><br>%s?") %
-                                htmllib.attrencode(delete_file)
+                                delete_file
                             )
             if c:
                 os.remove(os.path.join(snapshot_dir, delete_file))
@@ -5156,18 +5148,14 @@ def mode_snapshot(phase):
         # restore snapshot
         elif html.has_var("_restore_snapshot"):
             snapshot_file = html.var("_restore_snapshot")
-
-            if snapshot_file not in snapshots:
-                raise MKUserError(None, _("Invalid file specified."))
-
             c = wato_confirm(_("Confirm restore snapshot"),
                              _("Are you sure you want to restore the snapshot <br><br>%s ?") %
-                                htmllib.attrencode(snapshot_file)
+                                snapshot_file
                             )
             if c:
                 multitar.extract_from_file(snapshot_dir + snapshot_file, backup_paths)
                 log_pending(SYNCRESTART, None, "snapshot-restored",
-                     _("Restored snapshot %s") % htmllib.attrencode(snapshot_file))
+                     _("Restored snapshot %s") % snapshot_file)
                 return None, _("Successfully restored snapshot.")
             elif c == False: # not yet confirmed
                 return ""
@@ -5194,6 +5182,13 @@ def mode_snapshot(phase):
             return False
 
     else:
+        snapshots = []
+        if os.path.exists(snapshot_dir):
+            for f in os.listdir(snapshot_dir):
+                snapshots.append(f)
+        snapshots.sort(reverse=True)
+
+
         table.begin(_("Snapshots"), empty_text=_("There are no snapshots available."))
         for name in snapshots:
             table.row()
@@ -5390,7 +5385,7 @@ def mode_globalvars(phase):
         action = html.var("_action")
         if varname:
             domain, valuespec, need_restart, allow_reset = g_configvars[varname]
-            def_value = default_values.get(varname, valuespec.default_value())
+            def_value = default_values.get(varname, valuespec.canonical_value())
 
             if action == "reset" and not isinstance(valuespec, Checkbox):
                 c = wato_confirm(
@@ -5400,9 +5395,8 @@ def mode_globalvars(phase):
                        (varname, valuespec.value_to_text(def_value)))
             else:
                 if not html.check_transaction():
-                    return
+                        return
                 c = True # no confirmation for direct toggle
-
             if c:
                 # if action == "reset":
                 #     del current_settings[varname]
@@ -7082,10 +7076,7 @@ def default_site():
         if not "socket" in site \
             or site["socket"] == "unix:" + defaults.livestatus_unix_socket:
             return id
-    try:
-        return config.sites.keys()[0]
-    except:
-        return None
+    return config.sites.keys()[0]
 
 class SiteAttribute(Attribute):
     def __init__(self):
@@ -7936,10 +7927,8 @@ def mode_edit_user(phase):
             user = users.get(cloneid, userdb.new_user_template('htpasswd'))
         else:
             user = userdb.new_user_template('htpasswd')
-        pw_suffix = 'new'
     else:
         user = users.get(userid, userdb.new_user_template('htpasswd'))
-        pw_suffix = 'userid'
 
     # Returns true if an attribute is locked and should be read only. Is only
     # checked when modifying an existing user
@@ -7996,8 +7985,8 @@ def mode_edit_user(phase):
             increase_serial = True # password changed, reflect in auth serial
 
         else:
-            password = html.var("password_" + pw_suffix, '').strip()
-            password2 = html.var("password2_" + pw_suffix, '').strip()
+            password = html.var("password", '').strip()
+            password2 = html.var("password2", '').strip()
 
             # Detect switch back from automation to password
             if "automation_secret" in new_user:
@@ -8147,9 +8136,9 @@ def mode_edit_user(phase):
                      _("Normal user login with password"))
     html.write("<ul><table><tr><td>%s</td><td>" % _("password:"))
     if not is_locked('password'):
-        html.password_input("password_" + pw_suffix, autocomplete="off")
+        html.password_input("password", autocomplete="off")
         html.write("</td></tr><tr><td>%s</td><td>" % _("repeat:"))
-        html.password_input("password2_" + pw_suffix, autocomplete="off")
+        html.password_input("password2", autocomplete="off")
         html.write(" (%s)" % _("optional"))
     else:
         html.write('<i>%s</i>' % _('The password can not be changed (It is locked by the user connector).'))
@@ -10997,7 +10986,7 @@ def page_user_profile():
     users = userdb.load_users()
     user = users.get(config.user_id)
     if user == None:
-        html.show_warning(_("Sorry, your user account does not exist."))
+        html.warning(_("Sorry, your user account does not exist."))
         html.footer()
         return
 
@@ -11128,10 +11117,6 @@ def create_sample_config():
 
     save_rulesets(g_root_folder, rulesets)
 
-    # Make sure the host tag attributes are immediately declared!
-    config.wato_host_tags = wato_host_tags
-    config.wato_aux_tags = wato_aux_tags
-
 #.
 #   .--Pattern Editor------------------------------------------------------.
 #   |   ____       _   _                    _____    _ _ _                 |
@@ -11211,7 +11196,6 @@ def mode_pattern_editor(phase):
     html.text_input('match', cssclass = 'match', size=100)
     forms.end()
     html.button('_try', _('Try out'))
-    html.del_var('folder') # Never hand over the folder here
     html.hidden_fields()
     html.end_form()
 

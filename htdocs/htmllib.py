@@ -1360,8 +1360,7 @@ class html:
     def help(self, text):
         if text and text.strip():
             self.have_help = True
-            self.write('<div class=help style="display: %s">' % (
-                        not self.help_visible and "none" or "block"))
+            self.write('<div class=help style="display: %s">' % ("none"))
             self.write(text.strip())
             self.write('</div>')
 
