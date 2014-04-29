@@ -217,13 +217,13 @@ def render_dashboard(name):
     # and all dashlets resized to their new positions and sizes.
 
     html.javascript("""
-var header_height = %d;
-var screen_margin = %d;
-var title_height = %d;
-var dashlet_padding = Array%s;
-var corner_overlap = %d;
+//var header_height = %d;
+//var screen_margin = %d;
+//var title_height = %d;
+//var dashlet_padding = Array%s;
+//var corner_overlap = %d;
 var refresh_dashlets = %r;
-var dashboard_name = '%s';
+//var dashboard_name = '%s';
 //set_dashboard_size();
 //window.onresize = function () { set_dashboard_size(); }
 //window.onload = function () { set_dashboard_size(); }
@@ -274,7 +274,7 @@ def render_dashlet(nr, dashlet, wato_folder):
 
 
     html.write("""
-        <div class="box border inverse">
+        <div class="box border">
             <div class="box-title">
                 <h4><i class="fa fa-adjust"></i>%s</h4>
                 <div class="tools hidden-xs">

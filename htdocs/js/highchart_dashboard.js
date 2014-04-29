@@ -1,7 +1,6 @@
 function draw_hchart(id, type, title, name ,data) {
     var id_is = id+"_stats";
-    console.log($("#"+id_is));
-    var aise_hi = $("#"+id_is).highcharts({
+    $("#"+id_is).highcharts({
         chart: {
             plotBackgroundColor: null,
             plotBorderWidth: null,
@@ -32,6 +31,4 @@ function draw_hchart(id, type, title, name ,data) {
             data: data
         }]
     });
-
-    console.log(aise_hi);
 }

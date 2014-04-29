@@ -1714,8 +1714,9 @@ function vs_passwordspec_randomize(img) {
 
 
 function help_enable() {
-    var aHelp = document.getElementById('helpbutton');
-    aHelp.style.display = "inline-block";
+    // var aHelp = document.getElementById('helpbutton');
+    // aHelp.style.display = "inline-block";
+    return true;
 }
 
 function help_toggle() {

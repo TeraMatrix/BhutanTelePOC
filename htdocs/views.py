@@ -86,7 +86,21 @@ def load_plugins():
 ##################################################################################
 # Layouts
 ##################################################################################
-
+global stylesheets
+stylesheets = [
+                "theme/css/cloud-admin", 
+                "theme/css/themes/default",
+                "theme/css/responsive", 
+                "theme/font-awesome/css/font-awesome.min",
+                "theme/js/bootstrap-daterangepicker/daterangepicker-bs3",
+                "theme/js/hubspot-messenger/css/messenger.min",
+                "theme/js/hubspot-messenger/css/messenger-spinner.min",
+                "theme/js/hubspot-messenger/css/messenger-theme-flat.min",
+                "theme/js/jquery-ui-1.10.3.custom/css/custom-theme/jquery-ui-1.10.3.custom.min",
+                "theme/js/bootstrap-switch/bootstrap-switch.min",
+                "theme/css/flags/flags.min",
+                "theme/css/fonts"
+    ]
 
 def show_filter(f):
     if not f.visible():
@@ -327,7 +341,7 @@ def page_edit_views(msg=None):
     if not config.may("general.edit_views"):
         raise MKAuthException(_("You are not allowed to edit views."))
 
-    html.header(_("Edit views"), stylesheets=["pages","views","status"])
+    html.header(_("Edit views"), stylesheets= stylesheets + ["pages","views","status"])
     html.help(_("Here you can create and edit customizable <b>views</b>. A view "
             "displays monitoring status or log data by combining filters, sortings, "
             "groupings and other aspects."))
@@ -351,7 +365,7 @@ def page_edit_views(msg=None):
     html.sorted_select("datasource", [ (k, v["title"]) for k, v in multisite_datasources.items() ])
 
     html.write('<h3>' + _("Existing Views") + '</h3>')
-    html.write('<table class=data>')
+    html.write('<table class="data table table-striped">')
     html.write("<tr>")
     html.write("<th>%s</th>" % _("Actions"))
     html.write("<th>%s</th>" % _("Link Name"))
@@ -518,8 +532,8 @@ def page_edit_view():
         except MKUserError, e:
             html.write("<div class=error>%s</div>\n" % e.message)
             html.add_user_error(e.varname, e.message)
-
-    html.header(_("Edit view"), stylesheets=["pages", "views", "status", "bi"])
+    
+    html.header(_("Edit view"), stylesheets= stylesheets + ["pages", "views", "status", "bi"])
     html.begin_context_buttons()
     back_url = html.var("back", "")
     if back_url:
@@ -1340,7 +1354,7 @@ def render_view(view, rows, datasource, group_painters, painters,
         # Show/Hide the header with page title, MK logo, etc.
         if 'H' in display_options:
             # FIXME: view/layout/module related stylesheets/javascripts e.g. in case of BI?
-            html.body_start(view_title(view), stylesheets=["pages","views","status","bi"], javascripts=['bi'])
+            html.body_start(view_title(view), stylesheets= stylesheets + ["pages","views","status","bi"], javascripts=['bi'])
         if 'T' in display_options:
             html.top_heading(view_title(view))
 

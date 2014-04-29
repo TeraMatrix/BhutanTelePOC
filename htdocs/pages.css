@@ -76,7 +76,7 @@ body.main div.main {
 }
 
 /* The content page header containing the title, user, date */
-body.main table.header {
+/*body.main table.header {
     width: 100%;
     max-width: 100%;
     margin: 0 0 5px 0;
@@ -122,7 +122,7 @@ body.main table.header td.right {
 body.main table.header td.right img {
     position: relative;
     top: 5px;
-}
+}*/
 
 body.main hr.header {
     background-color: #fff;
@@ -159,7 +159,7 @@ body.main table.footer {
     color: #fff;
 }
 
-body.main table.footer td.left   { text-align: left; }
+/*body.main table.footer td.left   { text-align: left; }
 body.main table.footer td.middle { text-align: center; }
 body.main table.footer td.right  { text-align: right; }
 body.main table.footer a { color: #246; }
@@ -170,7 +170,7 @@ body.main table.footer img.statusicon {
     position: relative;
     top: -3px;
 }
-
+*/
 div#foot_refresh, div#foot_refresh_time {
     display: inline-block;
 }
@@ -186,11 +186,11 @@ div#foot_refresh, div#foot_refresh_time {
 +--------------------------------------------------------------------------+
 | The blue buttons at the top of the screen used for navigation.           |
 '-------------------------------------------------------------------------*/
-
+/*
 table.contextlinks {
     margin-bottom: 10px;
 }
-
+*/
 div.contextlink {
     float: left;
     overflow: hidden;
@@ -252,7 +252,7 @@ div.contextlink img {
 | Styles for table that should rows of data. Such tables are used in the   |
 | Status-GUI, in WATO and in custom modules that use similar tables.       |
 '-------------------------------------------------------------------------*/
-
+/*
 table.data {
     border-spacing: 0px;
     margin: 0;
@@ -283,27 +283,27 @@ table.data th {
 }
 table.data th:last-child {
     border-right-style: none;
-}
+}*/
 
 /* Two-lined header, for example in WATO: ChangeLog->Site Status */
-table.data tr.dualheader th {
+/*table.data tr.dualheader th {
     border-bottom: 1px solid #ccc;
-}
+}*/
 
 
 /* Table header links (For sorting) */
 table.data th.sort {
     /* text-decoration: underline; */
 }
-
+/*
 table.data th.sort:hover {
     background-color: #B2B2B2;
     cursor: pointer;
 }
-
-table.data th.sort:hover {
+*/
+/*table.data th.sort:hover {
     color: #000;
-}
+}*/
 
 table.data th.asc {
     /* color: #CBDCF2; */
@@ -314,15 +314,16 @@ table.data th.desc {
 }
 
 table.data th.tablegap {
-    background-color: transparent; /* none; */
+    /*background-color: transparent; /* none; */
 }
-
+/*
 table.data tr.data > td {
     border-right: 1px solid #ccc;
     padding: 2px 4px;
     height: 22px;
     vertical-align: middle;
 }
+/*
 table.data tr.data td:last-child {
     border-right-style: none;
 }
@@ -360,9 +361,9 @@ table.data td.host {
     padding-left: 0px;
     font-size: 120%;
 }
-
+*/
 /* Link to object in the classic nagios GUI */
-table.data td.singleicon img {
+/*table.data td.singleicon img {
     margin: 0;
     padding: 0;
 }
@@ -371,14 +372,14 @@ table.data td.singleicon {
     text-align: center;
 }
 
-/* Group header used in table, box and tiled layout */
+ Group header used in table, box and tiled layout 
 table.groupheader {
     margin: 0px;
     border: 0px;
     padding: 6px 0px 3px 0px;
 }
-
-tr.groupheader td {
+*/
+/*tr.groupheader td {
     border-style: none;
     margin: 0px;
     padding-top: 2px;
@@ -393,7 +394,7 @@ tr.groupheader a {
 tr.groupheader a:hover {
     text-decoration: underline;
 }
-
+*/
 /* state in group header must have fixed width */
 .groupheader td.state {
     border: 1px solid #000000;

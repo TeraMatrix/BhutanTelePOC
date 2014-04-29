@@ -488,7 +488,7 @@ class html:
     def begin_context_buttons(self):
         if not self.context_buttons_open:
             self.context_button_hidden = False
-            self.write("<table class=contextlinks><tr><td>\n")
+            self.write("<table class='table table-striped contextlinks'><tr><td>\n")
             self.context_buttons_open = True
 
     def end_context_buttons(self):
@@ -817,6 +817,7 @@ class html:
             # If the variable _link_target is set, then all links in this page
             # should be targetted to the HTML frame named by _link_target. This
             # is e.g. useful in the dash-board
+
             if self.link_target:
                 self.write('<base target="%s">\n' % self.link_target)
 
@@ -1212,7 +1213,7 @@ class html:
                  _("refresh: <div id=foot_refresh_time>%s</div> secs") % self.browser_reload))
             if self.render_headfoot:
                 si = self.render_status_icons()
-                self.write("<table class=footer><tr>"
+                self.write("<table class='footer table table-striped'><tr>"
                            "<td class=left>%s</td>"
                            "<td class=middle></td>"
                            "<td class=right>%s</td></tr></table>"

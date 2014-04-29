@@ -44,7 +44,7 @@ Boston, MA 02110-1301 USA.
 }
 
 /* Tables in WATO are not size to 100% per default */
-.wato table.data {
+/*.wato table.data {
     width: auto;
 }
 
@@ -53,7 +53,7 @@ Boston, MA 02110-1301 USA.
     background-color: #508aa1;
     background-color: #73a1b4;
 }
-
+*/
 
 
 .wato th.left {
@@ -172,15 +172,15 @@ Boston, MA 02110-1301 USA.
 
 
 .wato td.dns {
-    color: #666;
+    /*color: #666;*/
 }
 
 .wato td.dnserror {
-    color: #f00;
+    /*color: #f00;*/
 }
 
 .wato td.error {
-    color: #f00;
+    /*color: #f00;*/
 }
 
 .wato td.takeall {
@@ -188,17 +188,17 @@ Boston, MA 02110-1301 USA.
 }
 
 .wato div.inherited {
-    color: #444;
+    /*color: #444;*/
 }
 .wato div.inherited a {
-    color: #444;
+    /*color: #444;*/
 }
 .wato div.inherited b {
-    color: black;
+    /*color: black;*/
     font-weight: normal;
 }
 .wato td.inherited {
-    color: #666;
+    /*color: #666;*/
 }
 
 /* host validation error */
@@ -261,11 +261,11 @@ table.validationerror img {
     /* move left border of all items 22px left to make the items overlap */
     margin-left: -13px;
 
-    color: #fff;
+    /*color: #fff;*/
 }
 
 .wato div.folderpath li a {
-    color: #fff;
+    /*color: #fff;*/
     text-decoration: none;
 }
 
@@ -285,7 +285,7 @@ table.validationerror img {
     padding: 2px 0px 2px 4px;
     background-color: #7399ba;
     margin: 0;
-    color: #fff;
+    /*color: #fff;*/
     font-weight: normal;
     font-size: 8pt;
     border-style: none;
@@ -393,7 +393,7 @@ table.validationerror img {
     position: absolute;
     bottom: 23px;
     left: 20px;
-    color: #bde;
+    /*color: #bde;*/
 }
 
 .wato div.floatfolder .title {
@@ -403,7 +403,7 @@ table.validationerror img {
     right: 20px;
     text-align: center;
 
-    color: #fff;
+    /*color: #fff;*/
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -411,7 +411,7 @@ table.validationerror img {
 }
 
 .wato div.floatfolder .title a {
-    color: #fff;
+    /*color: #fff;*/
     font-size: 14px;
     text-decoration: none;
     position: relative;
@@ -444,7 +444,7 @@ table.validationerror img {
 .wato div.move_dialog span {
     display: block;
     margin-bottom: 2px;
-    color: white;
+    /*color: white;*/
 }
 
 .wato div.hoverarea {
@@ -474,7 +474,7 @@ table.validationerror img {
     margin-top: 10px;
     margin-bottom: 10px;
     padding-left: 1px;
-    color: white;
+    /*color: white;*/
 }
 
 /* Controls for the audit log paged mechanism */
@@ -502,7 +502,7 @@ table.validationerror img {
     border-radius: 10px;
     border: 1px solid white;
     background-color: #fcd340;
-    color: black;
+    /*color: black;*/
     text-align: center;
     width: 20px;
     height: 20px;
@@ -534,7 +534,7 @@ table.validationerror img {
 .wato div.rule div.title {
     position: absolute;
     top: 12px;
-    color: white;
+    /*color: white;*/
     font-size: 10pt;
     font-weight: bold;
 }
@@ -607,7 +607,7 @@ table.validationerror img {
 
 
 .wato table.data.ruleset tr.disabled td * {
-    color: #999;
+    /*color: #999;*/
     text-shadow: 0px 1px 0px #fff;
 }
 
@@ -653,45 +653,43 @@ form.search {
 }
 
 .wato div.mainmenu a {
-    width: 317px;
+    width: 300%;
     height: 76px;
     display: block;
-    background-image: url("images/wato_mainmenu_button_lo.png");
-    background-repeat: no-repeat;
+    /*background-image: url("images/wato_mainmenu_button_lo.png");*/
+    /*background-repeat: no-repeat;*/
     float: left;
     position: relative;
     margin: 0px -1px -1px 0px;
     left: -2px;
     text-decoration: none;
 }
-.wato div.mainmenu a:hover {
+/*.wato div.mainmenu a:hover {
     background-image: url("images/wato_mainmenu_button_hi.png");
 }
 .wato div.mainmenu a:active {
     background-image: url("images/wato_mainmenu_button_clicked.png");
-}
+}*/
 
 .wato div.mainmenu div {
     text-decoration: none;
-    color: white;
+    /*color: white;*/
 }
-.wato div.mainmenu img {
+/*.wato div.mainmenu img {
     position: absolute;
     top: 13px;
     left: 13px;
-}
-.wato div.mainmenu div.title {
+}*/
+/*.wato div.mainmenu div.title {
     font-weight: bold;
     position: absolute;
     left: 72px;
     top: 14px;
-}
+}*/
 .wato div.mainmenu div.subtitle {
-    position: absolute;
-    left: 72px;
-    top: 32px;
-    width: 237px;
     overflow: hidden;
+    /*color: #5E87B0;*/
+    width: 100%;
 }
 
 
@@ -744,7 +742,7 @@ div.rulesets table.nform tr.bottom td {
 
 .wato .rulesets div.ruleset a {
     text-decoration: none;
-    color: black;
+    /*color: black;*/
     white-space: nowrap;
     margin-right: 3px;
 }
@@ -778,14 +776,14 @@ div.rulesets table.nform tr.bottom td {
 
 /* Page edit_ruleset */
 div.varname {
-    color: white;
+    /*color: white;*/
     font-family: monospace, sans-serif;
 }
 
 /* page "global settings*/
 .wato div.globalvars a {
     text-decoration: none;
-    color: black;
+    /*color: black;*/
 }
 .wato div.globalvars a:hover {
     text-decoration: underline;
@@ -853,7 +851,7 @@ div.varname {
     padding-top: 4px;
     font-size: 8pt;
     box-shadow: 0.5px 0.5px 1px #224466 inset;
-    color: black;
+    /*color: black;*/
 }
 
 .wato td.tag-ellipsis {
@@ -885,7 +883,7 @@ div.varname {
     background-repeat: repeat;
     width: 50%;
     border: 1px solid #000;
-    color: black;
+    /*color: black;*/
 }
 
 .wato table.progress th {
@@ -1005,7 +1003,7 @@ div.varname {
 
 .wato div.error div.err {
     background-color: yellow;
-    color: #000;
+    /*color: #000;*/
     font-weight: bold;
     width: 100%;
     margin: 2px;
@@ -1024,13 +1022,13 @@ div.varname {
 }
 
 table.logwatch tr.noreason {
-    color: #898989;
+    /*color: #898989;*/
 }
 
 table.logwatch span.match {
     border: 1px solid #49768B;
     border-radius: 4px;
-    background-color: #fff;
+    background-/*color: #fff;*/
     padding: 0 2px 2px 2px;
 }
 

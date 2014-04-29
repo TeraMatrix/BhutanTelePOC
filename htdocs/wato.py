@@ -168,6 +168,21 @@ g_html_head_open = False
 #   `----------------------------------------------------------------------'
 
 wato_styles = [ "pages", "wato", "status" ]
+wato_styles += [
+                "theme/css/cloud-admin", 
+                "theme/css/themes/default",
+                "theme/css/responsive", 
+                "theme/font-awesome/css/font-awesome.min",
+                "theme/js/bootstrap-daterangepicker/daterangepicker-bs3",
+                "theme/js/hubspot-messenger/css/messenger.min",
+                "theme/js/hubspot-messenger/css/messenger-spinner.min",
+                "theme/js/hubspot-messenger/css/messenger-theme-flat.min",
+                "theme/js/jquery-ui-1.10.3.custom/css/custom-theme/jquery-ui-1.10.3.custom.min",
+                "theme/js/bootstrap-switch/bootstrap-switch.min",
+                "theme/css/flags/flags.min",
+                "theme/css/fonts",
+                "theme/js/tablecloth/css/tablecloth.min"
+                ]
 
 def page_handler():
 
@@ -1261,7 +1276,7 @@ def show_hosts(folder):
 
     # Show table of hosts in this folder
     html.begin_form("hosts", None, "POST")
-    html.write("<table class=data>\n")
+    html.write("<table class='data table table-striped'>\n")
 
     # Remember if that host has a target folder (i.e. was imported with
     # a folder information but not yet moved to that folder). If at least
@@ -2021,7 +2036,7 @@ def mode_edithost(phase, new, cluster):
 
         if errors:
             html.write("<div class=info>")
-            html.write('<table class=validationerror border=0 cellspacing=0 cellpadding=0><tr><td class=img>')
+            html.write('<table class="table table-striped validationerror" border=0 cellspacing=0 cellpadding=0><tr><td class=img>')
             html.write('<img src="images/icon_validation_error.png"></td><td>')
             html.write('<p><h3>%s</h3><ul>%s</ul></p>' %
                 (_("Warning: This host has an invalid configuration!"),
@@ -2211,7 +2226,7 @@ def show_service_table(host, firsttime):
     if html.var("_scan"):
         html.hidden_field("_scan", "on")
 
-    html.write("<table class=data>\n")
+    html.write("<table class='data table table-striped'>\n")
 
     for state_name, state_type, checkbox in [
         ( _("Available (missing) services"), "new", firsttime ),
@@ -3419,7 +3434,7 @@ def mode_changelog(phase):
         transaction_already_checked = False
         changes = foreign_changes()
         if changes:
-            table = "<table class=foreignchanges>"
+            table = "<table class='foreignchanges table table-striped'>"
             for user_id, count in changes.items():
                 table += '<tr><td>%s: </td><td>%d %s</td></tr>' % \
                    (config.alias_of_user(user_id), count, _("changes"))
@@ -3507,7 +3522,7 @@ def mode_changelog(phase):
             repstatus = load_replication_status()
             sites = [(name, config.site(name)) for name in config.sitenames() ]
             sort_sites(sites)
-            html.write("<table class=data>")
+            html.write("<table class='data table table-striped'>")
             html.write("<tr class=dualheader>")
             html.write("<th rowspan=2>%s</th>" % _("ID") +
                        "<th rowspan=2>%s</th>" % _("Alias"))
@@ -3673,7 +3688,7 @@ def mode_changelog(phase):
 
             # Is rendered on the page after hitting the "activate" button
             # Renders the html to show the progress and starts the sync via javascript
-            html.write("<table class=data>")
+            html.write("<table class='data table table-striped'>")
             html.write("<tr><th class=left>%s</th><th>%s</th></tr>" % (_('Progress'), _('Status')))
             html.write('<tr class="data odd0"><td class=repprogress><div id="repstate_local"></div></td>')
             html.write('<td id="repmsg_local"><i>%s</i></td></tr></table>' % _('activating...'))
@@ -3959,7 +3974,7 @@ def render_audit_log(log, what, with_filename = False, hilite_others=False):
     if what == 'audit':
         display_paged(times)
 
-    htmlcode += '<table class="data wato auditlog %s">' % what
+    htmlcode += '<table class="data wato auditlog table table-striped %s">' % what
     even = "even"
     for t, linkinfo, user, action, text in log:
         even = even == "even" and "odd" or "even"
@@ -4140,7 +4155,7 @@ def interactive_progress(items, title, stats, finishvars, timewait, success_stat
     if not termvars:
         termvars = finishvars;
     html.write("<center>")
-    html.write("<table class=progress>")
+    html.write("<table class='progress table table-striped'>")
     html.write("<tr><th colspan=2>%s</th></tr>" % title)
     html.write("<tr><td colspan=2 class=log><div id=progress_log></div></td></tr>")
     html.write("<tr><td colspan=2 class=bar>")
@@ -5332,6 +5347,7 @@ def mode_main(phase):
 
 def render_main_menu(some_modules, columns = 2):
     html.write('<div class="mainmenu">')
+    html.write("<div class='row'>")
     for nr, (mode_or_url, title, icon, permission, help) in enumerate(some_modules):
         if "." not in permission:
             permission = "wato." + permission
@@ -5343,15 +5359,36 @@ def render_main_menu(some_modules, columns = 2):
         else:
             url = make_link([("mode", mode_or_url)])
 
-        html.write('<a href="%s" onfocus="if (this.blur) this.blur();"' % url)
+        html.write("""<div class="col-md-3 box-container"> """)
+        html.write("""<div class="box border primary"> """)
+        html.write(""" <div class="box-title">
+                        <h5><i class="fa fa-bars"></i>%s</h5>
+                    </div>
+                """ % title)
+        html.write("""<div class="box-body"> """)
+        html.write(""" <div class="row">
+                            <div class="col-md-3">
+        """)
+        html.write('<img src="images/icon_%s.png">' % icon)
+        html.write("""</div>""")
+
+        html.write("""<div class="col-md-3">""")
+        html.write('<a href="%s"' % url)
         # html.write(r''' onmouseover='this.style.backgroundImage="url(\"images/wato_mainmenu_button_hi.png\")"; ''')
         # html.write(r''' onmouseout='this.style.backgroundImage="url(\"images/wato_mainmenu_button_lo.png\")"; ''')
         html.write(">")
-        html.write('<img src="images/icon_%s.png">' % icon)
-        html.write('<div class=title>%s</div>' % title)
         html.write('<div class=subtitle>%s</div>' % help)
         html.write('</a>')
+        html.write("</div>")
 
+        
+        html.write("</div>")
+        html.write("</div>")
+        html.write("</div>")
+        html.write("</div>")
+
+
+    html.write("</div>")
     html.write("</div>")
 
 #.
@@ -6256,7 +6293,7 @@ def mode_edit_timeperiod(phase):
     html.help("For each weekday you can setup no, one or several "
                "time ranges in the format <tt>23:39</tt>, in which the time period "
                "should be active.")
-    html.write("<table class=timeperiod>")
+    html.write("<table class='timeperiod table table-striped'>")
 
     for weekday, weekday_alias in weekdays:
         ranges = timeperiod.get(weekday)
@@ -6463,7 +6500,7 @@ def mode_sites(phase):
                          "successful then both side will exchange a login secret "
                          "which is used for the further remote calls.") % site["alias"])
             html.begin_form("login")
-            html.write("<table class=form>")
+            html.write("<table class='form table table-striped'>")
             html.write("<tr><td class=legend>%s</td>" % _("Administrator login"))
             html.write("<td class=content>")
             html.write("<table><tr><td>%s</td><td>" % _("Adminstrator name:"))
@@ -8640,7 +8677,7 @@ def mode_role_matrix(phase):
     role_list = roles.items()
     role_list.sort(cmp = lambda a,b: cmp((a[1]["alias"],a[0]), (b[1]["alias"],b[0])))
 
-    html.write("<table class=data>")
+    html.write("<table class='data table table-striped'>")
     html.write("<tr class=dualheader><th></th>")
     num_roles = 1
     for id, role in role_list:
