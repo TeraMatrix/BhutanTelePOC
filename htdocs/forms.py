@@ -120,36 +120,52 @@ def header(title, isopen = True, table_id = "", narrow = False):
         table_id = ' id="%s"' % table_id
     else:
         table_id = ''
-    html.write('<table %s class="nform%s">' % (table_id, narrow and " narrow" or ""))
+    
+    # html.write("<div class='row'>")
+    html.write("<div class='col-md-12'>")
+
+    html.write('<div %s class="box-container nform%s">' % (table_id, narrow and " narrow" or ""))
     fold_id = strip_bad_chars(title)
+
+    html.write("<div class='box'>")
+
     g_section_isopen = html.begin_foldable_container(
             html.form_name and html.form_name or "nform", fold_id, isopen, title, indent="nform")
-    html.write('<tr class="top %s"><td colspan=2></td></tr>' % (g_section_isopen and "open" or "closed"))
+
+    html.write('<div class="box-body bg">')    
+    # html.write('<div class="top %s separator"> </div>' % (g_section_isopen and "open" or "closed"))
+    
     g_header_open = True
     g_section_open = False
 
 # container without legend and content
 def container():
     global g_section_open
-    if g_section_open:
-        html.write('</td></tr>')
-    html.write('<tr class="%s"><td colspan=2 class=container>' %
-         (g_section_isopen and "open" or "closed"))
+    # if g_section_open:
+    #     html.write('</td></tr>')
+    # html.write('<div class="box-body bg">')
+
+    
+    # html.write('<tr class="%s"><td colspan=2 class=container>' %
+    #      (g_section_isopen and "open" or "closed"))
     g_section_open = True
 
 def section(title = None, checkbox = None, id = "", simple=False, hide = False):
     global g_section_open
-    if g_section_open:
-        html.write('</td></tr>')
+    # if g_section_open:
+    #     html.write('</td></tr>')
+
     if id:
         id = ' id="%s"' % id
-    html.write('<tr class="%s"%s%s><td class="legend%s">' %
+    html.write("<div class='col-md-12'>")
+
+    html.write('<div class="%s legend%s"%s%s>' %
             (g_section_isopen and "open" or "closed", id,
              hide and ' style="display:none;"' or '',
              simple and " simple" or ""))
     if title:
-        html.write('<div class="title%s">%s<span class="dots">%s</span></div>' %
-                  (checkbox and " withcheckbox" or "", title, "."*100))
+        html.write('<div class="title%s">%s</div>' %
+                  (checkbox and " withcheckbox" or "", title))
     if checkbox:
         html.write('<div class=checkbox>')
         if type(checkbox) == str:
@@ -159,17 +175,31 @@ def section(title = None, checkbox = None, id = "", simple=False, hide = False):
             html.checkbox(name, inactive, onclick = 'wato_toggle_attribute(this, \'%s\')' % attrname)
         html.write('</div>')
 
-    html.write('</td>')
-    html.write('<td class="content%s">' % (simple and " simple" or ""))
+    html.write('</div>')
+    html.write('<div class="content%s">' % (simple and " simple" or ""))
     g_section_open = True
 
 def end():
     global g_header_open
-    g_header_open = False
-    if g_section_open:
-        html.write('</td></tr>')
-    html.end_foldable_container()
-    html.write('<tr class="bottom %s"><td colspan=2></td></tr>'
-            % (g_section_isopen and "open" or "closed"))
-    html.write('</table>')
 
+    html.write("</div>") #end of cintent dt
+    
+    html.write("</div>") #end of dl
+    # if g_section_open:
+    #     html.write('</td></tr>')
+    
+    g_header_open = False
+
+    html.end_foldable_container()
+    
+    # html.write('<tr class="bottom %s"><td colspan=2></td></tr>'
+    #         % (g_section_isopen and "open" or "closed"))
+    
+    html.write('</div>') #end of def content div class
+    
+    html.write('</div>') #end of div class box
+    html.write('</div>')
+
+    html.write("</div>")
+    # html.write("</div>")
+    html.write('<div class="separator"></div>')

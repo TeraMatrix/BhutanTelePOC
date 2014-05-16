@@ -58,22 +58,22 @@ h3 {
 | Styles for the main frame (its body, header, footer, etc.)               |
 '-------------------------------------------------------------------------*/
 
-body.main {
-    background-image: url("images/contentframe_background.jpg");
-    padding: 10px 10px 0 10px;
-    background-attachment: fixed;
-    background-repeat: repeat;
-    font-family: arial, helvetica, sans-serif;
+/*body.main {*/
+    /*background-image: url("images/contentframe_background.jpg");*/
+    /*padding: 10px 10px 0 10px;*/
+    /*background-attachment: fixed;*/
+    /*background-repeat: repeat;*/
+/*    font-family: arial, helvetica, sans-serif;
     font-size: 9pt;
-    margin: 0;
+    margin: 0;*/
     /* avoid white background shining through in case of unaligned image in zoomed browser view */
-    background-color: #426D8A;
-}
+    /*background-color: #426D8A;*/
+/*}*/
 
-body.main div.main {
+/*body.main div.main {
     padding-left: 10px;
     border-left: 1px solid red;
-}
+}*/
 
 /* The content page header containing the title, user, date */
 /*body.main table.header {
@@ -424,7 +424,7 @@ img.iconbutton.trans {
 | Input forms (e.g. Filters, Commands, WATO)                               |
 '-------------------------------------------------------------------------*/
 
-input[type=text] {
+/*input[type=text] {
     box-shadow: 0.1px 1.2px 1.8px 0 #888 inset;
     position: relative;
 }
@@ -455,14 +455,14 @@ input[type=checkbox] {
 select {
     padding: 1px 3px;
 }
-
+*/
 
 h2.formcaption {
   font-size: 100%;
   margin-bottom: 0px;
 }
 
-table.form {
+/*table.form {
     background-image: url("images/form_background.png");
     background-repeat: repeat;
     border-collapse: collapse;
@@ -472,7 +472,7 @@ table.form {
     border-width: 1px;
     border-style: none none solid solid;
     border-color: #2f5f74;
-}
+}*/
 /* Sorry for the mess here. It is due to using foldable_containter
    within a form table (currently only in WATO in the host and
    folder properties) */

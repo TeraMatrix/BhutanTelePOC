@@ -103,25 +103,35 @@ stylesheets = [
     ]
 
 def show_filter(f):
+
     if not f.visible():
         html.write('<div style="display:none">')
         f.display()
         html.write('</div>')
     else:
-        html.write('<div class="floatfilter %s">' % (f.double_height() and "double" or "single"))
-        html.write('<div class=legend>%s</div>' % f.title)
+        html.write('<div class="col-md-4 box-container">')
+        html.write('<div class="box solid grey">')
+        # html.write('<div class="floatfilter %s">' % (f.double_height() and "double" or "single"))
+        html.write('<div class="box-title">%s</div>' % f.title)
+        html.write('<div class="box-body">')
         html.write('<div class=content>')
         f.display()
         html.write("</div>")
         html.write("</div>")
+        html.write("</div>")
+        html.write("</div>")
+    # html.write("</div>")
+    # html.write("</div>")
 
 def show_filter_form(is_open, filters):
     # Table muss einen anderen Namen, als das Formular
+    html.write('<div class="row">')
+    html.write('<div class="col-md-12">')
     html.write('<div class="view_form" id="filters" %s>'
             % (not is_open and 'style="display: none"' or '') )
 
     html.begin_form("filter")
-    html.write("<table border=0 cellspacing=0 cellpadding=0 class=filterform><tr><td>")
+    html.write("<table border=0 cellspacing=0 cellpadding=0 class='table'><tr><td>")
 
     # sort filters according to title
     s = [(f.sort_index, f.title, f) for f in filters if f.available()]
@@ -130,14 +140,25 @@ def show_filter_form(is_open, filters):
 
     # First show filters with double height (due to better floating
     # layout)
-    for sort_index, title, f in s:
-        if f.double_height():
-            show_filter(f)
+
+    count = 0
+
+    # for sort_index, title, f in s:
+    #     if f.double_height():
+    #         show_filter(f)
 
     # Now single height filters
     for sort_index, title, f in s:
-        if not f.double_height():
-            show_filter(f)
+        if count == 0:
+            html.write("<div class='row'>")
+            # html.write("<div class='col-md-12'>")
+        count += 1
+        # if not f.double_height():
+        show_filter(f)
+        if count == 3:
+            # html.write("</div>")
+            html.write("</div>")
+            count = 0
 
     html.write("</td></tr><tr><td>")
     html.button("search", _("Search"), "submit")
@@ -147,9 +168,11 @@ def show_filter_form(is_open, filters):
     html.end_form()
 
     html.write("</div>")
+    html.write("</div>")
+    html.write("</div>")
 
 def show_painter_options(painter_options):
-    html.write('<div class="view_form" id="painteroptions" style="display: none">')
+    html.write('<div id="painteroptions" style="display: none">')
     html.begin_form("painteroptions")
     forms.header(_("Display Options"))
     for on in painter_options:
@@ -1423,6 +1446,8 @@ def render_view(view, rows, datasource, group_painters, painters,
 
     # The refreshing content container
     if 'R' in display_options:
+        html.write("<div class='row'>\n")
+        html.write("<div class='col-md-12'>\n")
         html.write("<div id=data_container>\n")
 
     if not has_done_actions:
@@ -1466,6 +1491,8 @@ def render_view(view, rows, datasource, group_painters, painters,
 
     # FIXME: Sauberer wäre noch die Status Icons hier mit aufzunehmen
     if 'R' in display_options:
+        html.write("</div>\n")
+        html.write("</div>\n")
         html.write("</div>\n")
 
     if show_footer:
@@ -2072,6 +2099,9 @@ def show_command_form(is_open, datasource):
     # information) then the first info is the primary table. So 'what'
     # will be one of "host", "service", "command" or "downtime".
     what = datasource["infos"][0]
+    
+    html.write('<div class="row">')
+    html.write('<div class="col-md-12">')
 
     html.write('<div class="view_form" id="commands" %s>' %
                 (not is_open and 'style="display: none"' or '') )
@@ -2097,6 +2127,9 @@ def show_command_form(is_open, datasource):
 
     forms.end()
     html.end_form()
+    html.write("</div>")
+
+    html.write("</div>")
     html.write("</div>")
 
 # Examine the current HTML variables in order determine, which

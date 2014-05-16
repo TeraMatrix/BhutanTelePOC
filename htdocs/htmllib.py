@@ -488,6 +488,8 @@ class html:
     def begin_context_buttons(self):
         if not self.context_buttons_open:
             self.context_button_hidden = False
+            self.write("<div class='row'>\n")
+            self.write("<div class='col-md-12'>\n")
             self.write("<table class='table table-striped contextlinks'><tr><td>\n")
             self.context_buttons_open = True
 
@@ -499,6 +501,8 @@ class html:
                 self.context_button_hover_code("_short")
                 self.write("><a onclick='unhide_context_buttons(this);' href='#'>...</a></div>")
             self.write("</td></tr></table>\n")
+            self.write("</div>\n")
+            self.write("</div>\n")
         self.context_buttons_open = False
 
     def context_button(self, title, url, icon=None, hot=False, id=None, bestof=None, hover_title=''):
@@ -1233,8 +1237,7 @@ class html:
         <script src="theme/js/jquery-ui-1.10.3.custom/js/jquery-ui-1.10.3.custom.min.js"></script>
         <!-- BOOTSTRAP -->
         <script src="theme/bootstrap-dist/js/bootstrap.min.js"></script>
-        
-            
+
         <!-- DATE RANGE PICKER -->
         <script src="theme/js/bootstrap-daterangepicker/moment.min.js"></script>
         
@@ -1575,8 +1578,28 @@ class html:
         onclick += ' onmouseout="this.style.cursor=\'auto\';" '
 
         if indent == "nform":
-            self.write('<tr class=heading><td id="nform.%s.%s" %s colspan=2>' % (treename, id, onclick))
-            self.write('%s</td></tr>' % title)
+            self.write('<div class="box-title" id="nform.%s.%s" >' % (treename, id)) #the heading div
+            self.write('<h4> <i class="fa fa-bars"></i> %s </h4>' % title)
+            
+            box_actions = """
+            <div class="tools">
+                                            <a class="config" data-toggle="modal" href="#box-config">
+                                                <i class="fa fa-cog"></i>
+                                            </a>
+                                            <a class="reload" href="javascript:;">
+                                                <i class="fa fa-refresh"></i>
+                                            </a>
+                                            <a class="collapse" href="javascript:;">
+                                                <i class="fa fa-chevron-up"></i>
+                                            </a>
+                                            <a class="remove" href="javascript:;">
+                                                <i class="fa fa-times"></i>
+                                            </a>
+                                        </div>
+            """
+            self.write(box_actions)
+            self.write("</div>") #end of heading div
+
         else:
             self.write('<img align=absbottom class="treeangle" id="treeimg.%s.%s" '
                        'src="images/tree_%s.png" %s>' %
