@@ -490,7 +490,7 @@ class html:
             self.context_button_hidden = False
             self.write("<div class='row'>\n")
             self.write("<div class='col-md-12'>\n")
-            self.write("<table class='table table-striped contextlinks'><tr><td>\n")
+            self.write("<table class='table table-bordered contextlinks'><tr><td>\n")
             self.context_buttons_open = True
 
     def end_context_buttons(self):
@@ -1209,6 +1209,15 @@ class html:
                            "</script>\n" % (obj, obj, obj))
 
     def bottom_footer(self):
+
+        self.write("<div class='separator'></div>")
+
+        self.write("<!-- BEGIN: bottom_footer row : htmllib-->")
+        self.write("<div class='row'>")
+
+        self.write("<!-- BEGIN: bottom_footer col-md-12 htmllib-->")
+        self.write("<div class='col-md-12'>")
+
         if self.req.header_sent:
             self.bottom_focuscode()
             corner_text = ""
@@ -1217,11 +1226,21 @@ class html:
                  _("refresh: <div id=foot_refresh_time>%s</div> secs") % self.browser_reload))
             if self.render_headfoot:
                 si = self.render_status_icons()
-                self.write("<table class='footer table table-striped'><tr>"
-                           "<td class=left>%s</td>"
-                           "<td class=middle></td>"
-                           "<td class=right>%s</td></tr></table>"
+                self.write("<div class='footer'>"
+                           "<div class='col-md-5'>%s</div>"
+                           "<div class='col-md-2'></div>"
+                           "<div class='col-md-5'>%s</div>"
+                           "</div>"
                                % (si, corner_text))
+
+        self.write("</div>")
+        self.write("<!-- END: bottom_footer col-md-12 htmllib-->")
+
+        self.write("</div>")
+        self.write("<!-- END: bottom_footer row : htmllib-->")
+
+        self.write("<div class='separator'></div>")
+
 
     def body_end(self):
         if self.have_help:
@@ -1577,30 +1596,34 @@ class html:
         onclick += ' onmouseover="this.style.cursor=\'pointer\';" '
         onclick += ' onmouseout="this.style.cursor=\'auto\';" '
 
+        self.write("<!-- FORM Box tile -->")
+
         if indent == "nform":
             self.write('<div class="box-title" id="nform.%s.%s" >' % (treename, id)) #the heading div
             self.write('<h4> <i class="fa fa-bars"></i> %s </h4>' % title)
             
             box_actions = """
-            <div class="tools">
-                                            <a class="config" data-toggle="modal" href="#box-config">
-                                                <i class="fa fa-cog"></i>
-                                            </a>
-                                            <a class="reload" href="javascript:;">
-                                                <i class="fa fa-refresh"></i>
-                                            </a>
-                                            <a class="collapse" href="javascript:;">
-                                                <i class="fa fa-chevron-up"></i>
-                                            </a>
-                                            <a class="remove" href="javascript:;">
-                                                <i class="fa fa-times"></i>
-                                            </a>
-                                        </div>
+                <div class="tools">
+                    <a class="config" data-toggle="modal" href="#box-config">
+                        <i class="fa fa-cog"></i>
+                    </a>
+                    <a class="reload" href="javascript:;">
+                        <i class="fa fa-refresh"></i>
+                    </a>
+                    <a class="collapse" href="javascript:;">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+                    <a class="remove" href="javascript:;">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
             """
             self.write(box_actions)
             self.write("</div>") #end of heading div
 
         else:
+            self.write("<!-- Else FORM Box Title -->")
+
             self.write('<img align=absbottom class="treeangle" id="treeimg.%s.%s" '
                        'src="images/tree_%s.png" %s>' %
                     (treename, id, img_num, onclick))
@@ -1618,6 +1641,10 @@ class html:
                 indent_style += "margin: 0; "
             self.write('<ul class="treeangle %s" style="%s" id="tree.%s.%s">' %
                  (isopen and "open" or "closed", indent_style,  treename, id))
+
+            self.write("<!-- End Else FORM Box Title -->")
+
+        self.write("<!-- FORM Box tile ends -->")
 
         # give caller information about current toggling state (needed for nform)
         return isopen

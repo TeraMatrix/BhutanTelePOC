@@ -100,7 +100,7 @@ def end():
         table = None
         return
 
-    html.write('<table class="data')
+    html.write('<table class="table table-bordered data')
     if "css" in table:
         html.write(" %s" % table["css"])
     html.write('">\n')

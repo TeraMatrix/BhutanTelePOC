@@ -1276,7 +1276,7 @@ def show_hosts(folder):
 
     # Show table of hosts in this folder
     html.begin_form("hosts", None, "POST")
-    html.write("<table class='data table table-striped'>\n")
+    html.write("<table class='data table table-bordered'>\n")
 
     # Remember if that host has a target folder (i.e. was imported with
     # a folder information but not yet moved to that folder). If at least
@@ -2036,7 +2036,7 @@ def mode_edithost(phase, new, cluster):
 
         if errors:
             html.write("<div class=info>")
-            html.write('<table class="table table-striped validationerror" border=0 cellspacing=0 cellpadding=0><tr><td class=img>')
+            html.write('<table class="table table-bordered validationerror" border=0 cellspacing=0 cellpadding=0><tr><td class=img>')
             html.write('<img src="images/icon_validation_error.png"></td><td>')
             html.write('<p><h3>%s</h3><ul>%s</ul></p>' %
                 (_("Warning: This host has an invalid configuration!"),
@@ -2226,7 +2226,7 @@ def show_service_table(host, firsttime):
     if html.var("_scan"):
         html.hidden_field("_scan", "on")
 
-    html.write("<table class='data table table-striped'>\n")
+    html.write("<table class='data table table-bordered'>\n")
 
     for state_name, state_type, checkbox in [
         ( _("Available (missing) services"), "new", firsttime ),
@@ -3434,7 +3434,7 @@ def mode_changelog(phase):
         transaction_already_checked = False
         changes = foreign_changes()
         if changes:
-            table = "<table class='foreignchanges table table-striped'>"
+            table = "<table class='foreignchanges table table-bordered'>"
             for user_id, count in changes.items():
                 table += '<tr><td>%s: </td><td>%d %s</td></tr>' % \
                    (config.alias_of_user(user_id), count, _("changes"))
@@ -3522,7 +3522,7 @@ def mode_changelog(phase):
             repstatus = load_replication_status()
             sites = [(name, config.site(name)) for name in config.sitenames() ]
             sort_sites(sites)
-            html.write("<table class='data table table-striped'>")
+            html.write("<table class='data table table-bordered'>")
             html.write("<tr class=dualheader>")
             html.write("<th rowspan=2>%s</th>" % _("ID") +
                        "<th rowspan=2>%s</th>" % _("Alias"))
@@ -3688,7 +3688,7 @@ def mode_changelog(phase):
 
             # Is rendered on the page after hitting the "activate" button
             # Renders the html to show the progress and starts the sync via javascript
-            html.write("<table class='data table table-striped'>")
+            html.write("<table class='data table table-bordered'>")
             html.write("<tr><th class=left>%s</th><th>%s</th></tr>" % (_('Progress'), _('Status')))
             html.write('<tr class="data odd0"><td class=repprogress><div id="repstate_local"></div></td>')
             html.write('<td id="repmsg_local"><i>%s</i></td></tr></table>' % _('activating...'))
@@ -3974,7 +3974,7 @@ def render_audit_log(log, what, with_filename = False, hilite_others=False):
     if what == 'audit':
         display_paged(times)
 
-    htmlcode += '<table class="data wato auditlog table table-striped %s">' % what
+    htmlcode += '<table class="data wato auditlog table table-bordered %s">' % what
     even = "even"
     for t, linkinfo, user, action, text in log:
         even = even == "even" and "odd" or "even"
@@ -4155,7 +4155,7 @@ def interactive_progress(items, title, stats, finishvars, timewait, success_stat
     if not termvars:
         termvars = finishvars;
     html.write("<center>")
-    html.write("<table class='progress table table-striped'>")
+    html.write("<table class='progress table table-bordered'>")
     html.write("<tr><th colspan=2>%s</th></tr>" % title)
     html.write("<tr><td colspan=2 class=log><div id=progress_log></div></td></tr>")
     html.write("<tr><td colspan=2 class=bar>")
@@ -6293,7 +6293,7 @@ def mode_edit_timeperiod(phase):
     html.help("For each weekday you can setup no, one or several "
                "time ranges in the format <tt>23:39</tt>, in which the time period "
                "should be active.")
-    html.write("<table class='timeperiod table table-striped'>")
+    html.write("<table class='timeperiod table table-bordered'>")
 
     for weekday, weekday_alias in weekdays:
         ranges = timeperiod.get(weekday)
@@ -6500,7 +6500,7 @@ def mode_sites(phase):
                          "successful then both side will exchange a login secret "
                          "which is used for the further remote calls.") % site["alias"])
             html.begin_form("login")
-            html.write("<table class='form table table-striped'>")
+            html.write("<table class='form table table-bordered'>")
             html.write("<tr><td class=legend>%s</td>" % _("Administrator login"))
             html.write("<td class=content>")
             html.write("<table><tr><td>%s</td><td>" % _("Adminstrator name:"))
@@ -8677,7 +8677,7 @@ def mode_role_matrix(phase):
     role_list = roles.items()
     role_list.sort(cmp = lambda a,b: cmp((a[1]["alias"],a[0]), (b[1]["alias"],b[0])))
 
-    html.write("<table class='data table table-striped'>")
+    html.write("<table class='data table table-bordered'>")
     html.write("<tr class=dualheader><th></th>")
     num_roles = 1
     for id, role in role_list:
@@ -11300,7 +11300,7 @@ def mode_pattern_editor(phase):
             match_title = reason
 
         html.begin_foldable_container("rule", str(rulenr), True, "<b>Rule #%d</b>" % (rulenr + 1), indent = False)
-        html.write('<table style="width:100%" class="data logwatch"><tr>')
+        html.write('<table style="width:100%" class="data table table-bordered logwatch"><tr>')
         html.write('<th style="width:30px;">' + _('Match') + '</th>')
         html.write('<th style="width:50px;">' + _('State') + '</th>')
         html.write('<th style="width:300px;">' + _('Pattern') + '</th>')

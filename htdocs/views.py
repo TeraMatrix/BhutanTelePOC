@@ -131,7 +131,7 @@ def show_filter_form(is_open, filters):
             % (not is_open and 'style="display: none"' or '') )
 
     html.begin_form("filter")
-    html.write("<table border=0 cellspacing=0 cellpadding=0 class='table'><tr><td>")
+    html.write("<table border=0 cellspacing=0 cellpadding=0 class='table table-bordered'><tr><td>")
 
     # sort filters according to title
     s = [(f.sort_index, f.title, f) for f in filters if f.available()]
@@ -172,17 +172,29 @@ def show_filter_form(is_open, filters):
     html.write("</div>")
 
 def show_painter_options(painter_options):
-    html.write('<div id="painteroptions" style="display: none">')
+    html.write('<!-- BEGIN: row show_painter_options -->')
+    html.write("<div class='row'>")
+    html.write('<!-- BEGIN: col - md - 12 show_painter_options -->')
+    html.write("<div class='col-md-12'>")
+
+    html.write('<div id="painteroptions">')
     html.begin_form("painteroptions")
     forms.header(_("Display Options"))
     for on in painter_options:
         opt = multisite_painter_options[on]
         forms.section(opt["title"])
         html.select(on, opt["values"], get_painter_option(on), "submit();" )
+        forms.end_section()
     forms.end()
     html.hidden_fields()
     html.end_form()
     html.write('</div>')
+
+    html.write('</div>')
+    html.write('<!-- END: col - md - 12 show_painter_options -->')
+    html.write('</div>')
+    html.write('<!-- END: row show_painter_options -->')
+
 
 
 ##################################################################################
@@ -388,7 +400,7 @@ def page_edit_views(msg=None):
     html.sorted_select("datasource", [ (k, v["title"]) for k, v in multisite_datasources.items() ])
 
     html.write('<h3>' + _("Existing Views") + '</h3>')
-    html.write('<table class="data table table-striped">')
+    html.write('<table class="data table table-bordered">')
     html.write("<tr>")
     html.write("<th>%s</th>" % _("Actions"))
     html.write("<th>%s</th>" % _("Link Name"))
@@ -572,6 +584,7 @@ def page_edit_view():
 
     forms.section(_("Title"))
     html.text_input("view_title", size=50)
+    forms.end_section()
 
     forms.section(_("Link Name"))
     html.text_input("view_name", size=12)
@@ -581,16 +594,19 @@ def page_edit_view():
                 "with the same title but only one per link name. If you create a "
                 "view that has the same link name as a builtin view, then your "
                 "view will override that (shadowing it)."))
+    forms.end_section()
 
     forms.section(_("Datasource"), simple=True)
     datasource_title = multisite_datasources[datasourcename]["title"]
     html.write("%s: <b>%s</b><br>\n" % (_('Datasource'), datasource_title))
     html.hidden_field("datasource", datasourcename)
     html.help(_("The datasource of a view cannot be changed."))
+    forms.end_section()
 
     forms.section(_("Topic"))
     html.text_input("view_topic", _("Other"), size=50)
     html.help(_("The view will be sorted under this topic in the Views snapin. "))
+    forms.end_section()
 
     forms.section(_("Buttontext"))
     html.text_input("view_linktitle", size=26)
@@ -598,9 +614,11 @@ def page_edit_view():
     html.text_input("view_icon", size=14)
     html.help(_("If you define a text here, then it will be used in "
                 "buttons to the view instead of of view title."))
+    forms.end_section()
 
     forms.section(_("Description"))
     html.text_area("view_description", "", rows=4, cols=50)
+    forms.end_section()
 
     forms.section(_("Visibility"))
     if config.may("general.publish_views"):
@@ -612,18 +630,21 @@ def page_edit_view():
     html.write("<br />\n")
     html.checkbox("mustsearch", label=_('show data only on search') + "<br>")
     html.checkbox("hidebutton", label=_('do not show a context button to this view'))
+    forms.end_section()
 
     forms.section(_("Browser reload"))
     html.write(_("Reload page every "))
     html.number_input("browser_reload", 0)
     html.write(_(" seconds"))
     html.help(_("Leave this empty or at 0 for now automatic reload."))
+    forms.end_section()
 
     forms.section(_("Audible alarm sounds"), simple=True)
     html.checkbox("play_sounds", False, label=_("Play alarm sounds"))
     html.help(_("If enabled and the view shows at least one host or service problem "
                 "the a sound will be played by the browser. Please consult the %s for details.")
                 % docu_link("multisite_sounds", _("documentation")))
+    forms.end_section()
 
     forms.header(_("Filters"), isopen=False)
     allowed_filters = filters_allowed_for_datasource(datasourcename)
@@ -679,6 +700,7 @@ def page_edit_view():
         html.write('</div>')
         html.write('<div class=clear></div>')
         html.help(filt.comment)
+        forms.end_section()
 
     html.write("<script language=\"javascript\">\n")
 
@@ -704,6 +726,7 @@ def page_edit_view():
             html.sorted_select("%s%d" % (var_prefix, n), collist)
             html.write(" ")
             html.select("%sorder_%d" % (var_prefix, n), [("asc", _("Ascending")), ("dsc", _("Descending"))])
+            forms.end_section()
 
     def column_selection(title, var_prefix, data):
         allowed = allowed_for_datasource(data, datasourcename)
@@ -723,6 +746,7 @@ def page_edit_view():
             view_edit_column(n, var_prefix, maxnum, allowed, joined)
         html.write('</div>')
         html.jsbutton('add_column', _("Add Column"), "add_view_column(this, '%s', '%s')" % (datasourcename, var_prefix))
+        forms.end_section()
 
     # [4] Sorting
     sorter_selection(_("Sorting"), "sort_", max_sort_columns, multisite_sorters)
@@ -737,9 +761,11 @@ def page_edit_view():
     forms.header(_("Layout"), isopen=False)
     forms.section(_("Basic Layout"))
     html.sorted_select("layout", [ (k, v["title"]) for k,v in multisite_layouts.items() if not v.get("hide")])
+    forms.end_section()
 
     forms.section(_("Number of Columns"))
     html.number_input("num_columns", 1)
+    forms.end_section()
 
     forms.section(_('Column headers'))
 
@@ -752,9 +778,11 @@ def page_edit_view():
         ("off",      _("off")),
         ("pergroup", _("once per group")),
         ("repeat",   _("repeat every 20'th row")) ])
+    forms.end_section()
 
     forms.section(_('Sortable by user'), simple=True)
     html.checkbox('user_sortable', True, label=_("Make view sortable by user"))
+    forms.end_section()
 
     forms.end()
 
@@ -781,7 +809,7 @@ def view_edit_column(n, var_prefix, maxnum, allowed, joined = []):
     if joined:
         collist += [ ("-", "---") ] + collist_of_collection(joined, collist)
 
-    html.write("<div class=columneditor id=%seditor_%d><table><tr>" % (var_prefix, n))
+    html.write("<div class=columneditor id=%seditor_%d><table class='table table-bordered'><tr>" % (var_prefix, n))
 
     # Buttons for deleting and moving around
     html.write('<td class="cebuttons" rowspan=5>')
@@ -2100,6 +2128,7 @@ def show_command_form(is_open, datasource):
     # will be one of "host", "service", "command" or "downtime".
     what = datasource["infos"][0]
     
+    html.write("<!-- begin : show_command_form -->")
     html.write('<div class="row">')
     html.write('<div class="col-md-12">')
 
@@ -2124,13 +2153,16 @@ def show_command_form(is_open, datasource):
         for command in by_group[group]:
             forms.section(command["title"])
             command["render"]()
+            forms.end_section()
+        forms.end()
 
-    forms.end()
+    
     html.end_form()
     html.write("</div>")
 
     html.write("</div>")
     html.write("</div>")
+    html.write("<!-- end : show command form -->")
 
 # Examine the current HTML variables in order determine, which
 # command the user has selected. The fetch ids from a data row
