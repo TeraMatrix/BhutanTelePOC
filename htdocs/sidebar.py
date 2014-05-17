@@ -77,9 +77,9 @@ def bulletlink(text, target, frame="main"):
     html.write("<li class=sidebar>" + link(text, target, frame) + "</li>\n")
 
 def iconlink(text, target, icon):
-    linktext = '<img class=iconlink src="images/icon_%s.png">%s' % \
+    linktext = '<img class="iconlink main_click" src="images/icon_%s.png">%s' % \
          ( icon, text )
-    html.write('<a target=main class="iconlink link" href="%s">%s</a><br>' % \
+    html.write('<a target=main class="iconlink link main_click" href="%s">%s</a><br>' % \
             (target, linktext))
 
 def footnotelinks(links):
@@ -200,12 +200,14 @@ def page_side():
     html.write("<!-- BEGIN: sidebar js for reloading frame -->")
     html.write("<script> \n")
     html.write("""
-        $("document").ready(function(){
-                $(".main_click").click(function(){
-                    var src = ($(this).attr("href"));
-                    $("#main_frame",parent.document).attr("src",src).reload();
-                    return false;
-                });
+            $(".main_click").click(function(event){
+                event.preventDefault();
+                event.stopPropagation();
+                var src = ($(this).attr("href"));
+
+                $("#main_frame",parent.document).attr("src",src);
+                parent.document.reload();
+                return false;
             });
     """)
     html.write("</script> \n")

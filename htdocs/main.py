@@ -65,7 +65,7 @@ def page_index():
 </head>
 <frameset cols="280,*" frameborder="0" framespacing="0" border="0">
     <frame src="side.py" name="side" noresize scrolling="no">
-    <frame src="%s" name="main" noresize>
+    <frame src="%s" name="main" id="main_frame" noresize>
 </frameset>
 </html>
 """ % (heading, start_url))
