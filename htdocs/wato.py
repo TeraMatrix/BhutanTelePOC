@@ -5346,8 +5346,15 @@ def mode_main(phase):
     render_main_menu(modules)
 
 def render_main_menu(some_modules, columns = 2):
-    html.write('<div class="mainmenu">')
-    html.write("<div class='row'>")
+    html.write("<!-- BEGIN: main menu wato render_main_menu --> \n")
+    html.write('<div class="mainmenu">\n')
+
+    html.write("<!-- BEGIN: row main ment render_main_menu --> \n")
+    html.write("<div class='row'>\n")
+
+    html.write("<!-- BEGIN: column 12 main menu wato render_main_menu --> \n")
+    html.write("<div class='col-md-12'>\n")
+
     for nr, (mode_or_url, title, icon, permission, help) in enumerate(some_modules):
         if "." not in permission:
             permission = "wato." + permission
@@ -5388,8 +5395,15 @@ def render_main_menu(some_modules, columns = 2):
         html.write("</div>")
 
 
-    html.write("</div>")
-    html.write("</div>")
+    html.write("</div>\n")
+    html.write("<!-- END: column 12 main menu wato render_main_menu -->")
+
+    html.write("</div>\n")
+    html.write("<!-- END: row main menu wato render_main_menu -->")
+    
+    html.write("</div>\n")
+    html.write("<!-- END: main menu wato render_main_menu -->")
+
 
 #.
 #   .-Global-Settings------------------------------------------------------.
@@ -11809,6 +11823,7 @@ def wato_html_head(title):
     if not g_html_head_open:
         g_html_head_open = True
         html.header(title, stylesheets = wato_styles)
+        
         html.write("<div class=wato>\n")
 
 def render_folder_path(the_folder = 0, link_to_last = False, keepvarnames = ["mode"]):
