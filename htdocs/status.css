@@ -37,11 +37,11 @@ Boston, MA 02110-1301 USA.
   OK:      #41a62a
 */
 
-td.state {
+/*td.state {
     text-align: center;
     font-weight: bold;
     width: 32px;
-}
+}*/
 
 /* OK/UP */
 .state0, .hstate0, .state0 a, .hstate0 a {
@@ -216,7 +216,7 @@ td.statex {  /* zero count */
 }
 
 /* Row coloring in case of the different states */
-tr.odd0  { background-color: #eee; }
+/*tr.odd0  { background-color: #eee; }
 tr.even0 { background-color: #ddd; }
 
 td.odd0  { background-color: #eee; }
@@ -229,7 +229,7 @@ tr.odd2  { background-color: #fcc; }
 tr.even2 { background-color: #faa; }
 
 tr.odd3  { background-color: #ffe0a0; }
-tr.even3 { background-color: #ffefaf; }
+tr.even3 { background-color: #ffefaf; }*/
 
 /* Row headers in single dataset layout */
 

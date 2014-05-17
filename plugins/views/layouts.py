@@ -65,8 +65,9 @@ def render_group_checkbox_th():
 def render_single_dataset(rows, view, group_painters, painters, num_columns, _ignore_show_checkboxes):
     for row in rows:
         register_events(row) # needed for playing sounds
-
-    html.write('<table class="data single">\n')
+    html.write("<!-- BEGIN: plugins/view/layout/render_single_dataset -->\n")
+    html.write("<div class='col-md-12'>\n")
+    html.write('<table class="data table table-bordered">\n')
     rownum = 0
     odd = "odd"
     while rownum < len(rows):
@@ -93,6 +94,8 @@ def render_single_dataset(rows, view, group_painters, painters, num_columns, _ig
             html.write("</tr>\n")
         rownum += num_columns
     html.write("</table>\n")
+    html.write("</div>\n")
+    html.write("<!-- END: plugins/view/layout/render_single_dataset -->\n")
     html.write("</div>\n")
 
 multisite_layouts["dataset"] = {
@@ -171,7 +174,7 @@ def render_grouped_boxes(rows, view, group_painters, painters, num_columns, show
             painted = paint(p, rows[0][1])
         html.write("</tr></table>\n")
 
-        html.write("<table class=data>")
+        html.write("<table class='data table table-bordered'>")
         trclass = None
 
         def show_header_line():
@@ -332,7 +335,10 @@ def render_grouped_list(rows, view, group_painters, painters, num_columns, show_
 
     repeat_heading_every = 20 # in case column_headers is "repeat"
 
-    html.write("<table class='data table'>\n")
+    html.write("<!-- BEGIN: plugins/views/layouts/render_grouped_list -->\n")
+    html.write("<div class='col-md-12'>\n")
+
+    html.write("<table class='data table table-bordered'>\n")
     last_group = None
     odd = "even"
     column = 1
@@ -466,6 +472,10 @@ def render_grouped_list(rows, view, group_painters, painters, num_columns, show_
             html.write("<td class=fillup colspan=%d></td>" % num_painters)
         html.write("</tr>\n")
     html.write("</table>\n")
+
+    html.write("</div>\n")
+    html.write("<!-- END: plugins/views/layouts/render_grouped_list -->\n")
+
     init_rowselect(view)
 
 multisite_layouts["table"] = {

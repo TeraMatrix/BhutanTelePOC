@@ -68,7 +68,7 @@ def link(text, target, frame="main"):
     if not (":" in target[:10]) and target[0] != '/':
         target = defaults.url_prefix + "check_mk/" + target
     return '<a onfocus="if (this.blur) this.blur();" target="%s" ' \
-           'class=link href="%s">%s</a>' % (htmllib.attrencode(frame), htmllib.attrencode(target), htmllib.attrencode(text))
+           'class="link main_click" href="%s">%s</a>' % (htmllib.attrencode(frame), htmllib.attrencode(target), htmllib.attrencode(text))
 
 def simplelink(text, target, frame="main"):
     html.write(link(text, target, frame) + "<br>\n")
@@ -146,7 +146,8 @@ def sidebar_foot():
         html.icon_button("logout.py", _("Log out"), "sidebar_logout", target="_top")
         # html.write('<li><a class=logout target="_top" href="logout.py" title="%s"></a></li>' % _('Logout'))
     html.write('</ul>')
-    html.write("<div class=copyright>%s</div>\n" % _("&copy; <a target=\"_blank\" href=\"http://mathias-kettner.de\">Mathias Kettner</a>"))
+
+    # html.write("<div class=copyright>%s</div>\n" % _("&copy; <a target=\"_blank\" href=\"http://mathias-kettner.de\">Mathias Kettner</a>"))
     html.write('</div>')
 
 # Standalone sidebar
@@ -190,6 +191,26 @@ def page_side():
     html.write("sidebar_scheduler();\n")
     html.write("window.onresize = function() { setSidebarHeight(); }\n")
     html.write("</script>\n")
+
+    html.write("""
+        <!-- JQUERY -->
+        <script type="text/javascript" src="theme/js/jquery/jquery-1.11.1.min.js" ></script>
+    """)
+
+    html.write("<!-- BEGIN: sidebar js for reloading frame -->")
+    html.write("<script> \n")
+    html.write("""
+        $("document").ready(function(){
+                $(".main_click").click(function(){
+                    var src = ($(this).attr("href"));
+                    $("#main_frame",parent.document).attr("src",src).reload();
+                    return false;
+                });
+            });
+    """)
+    html.write("</script> \n")
+    html.write("<!-- END: sidebar js for reloading frame -->")
+
 
     html.write("</body>\n</html>")
 

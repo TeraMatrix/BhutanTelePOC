@@ -172,12 +172,12 @@ def show_filter_form(is_open, filters):
     html.write("</div>")
 
 def show_painter_options(painter_options):
-    html.write('<!-- BEGIN: row show_painter_options -->')
-    html.write("<div class='row'>")
-    html.write('<!-- BEGIN: col - md - 12 show_painter_options -->')
-    html.write("<div class='col-md-12'>")
+    html.write('<!-- BEGIN: row show_painter_options -->\n')
+    html.write("<div class='row'>\n")
+    html.write('<!-- BEGIN: col - md - 12 show_painter_options -->\n')
+    html.write("<div class='col-md-12'>\n")
 
-    html.write('<div id="painteroptions">')
+    html.write('<div id="painteroptions">\n')
     html.begin_form("painteroptions")
     forms.header(_("Display Options"))
     for on in painter_options:
@@ -188,12 +188,12 @@ def show_painter_options(painter_options):
     forms.end()
     html.hidden_fields()
     html.end_form()
-    html.write('</div>')
+    html.write('</div>\n')
 
-    html.write('</div>')
-    html.write('<!-- END: col - md - 12 show_painter_options -->')
-    html.write('</div>')
-    html.write('<!-- END: row show_painter_options -->')
+    html.write('</div>\n')
+    html.write('<!-- END: col - md - 12 show_painter_options -->\n')
+    html.write('</div>\n')
+    html.write('<!-- END: row show_painter_options -->\n')
 
 
 
