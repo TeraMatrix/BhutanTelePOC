@@ -37,12 +37,10 @@ Boston, MA 02110-1301 USA.
 '-------------------------------------------------------------------------*/
 
 body.side {
-    background-image: url("images/sidebar_background.jpg");
     padding: 0;
     width: 280px;
     height: 100%;
     overflow:hidden;
-    font-family: arial, helvetica, sans-serif;
     font-size: 9pt;
     margin: 0px;
 }
@@ -56,7 +54,8 @@ body.side {
     height: 55px;
     z-index: 10;
     background-repeat: no-repeat;
-    background-image: url("images/sidebar_top.png");
+    background-size:420px auto;
+    background-image: url("logo.jpg");
 }
 
 #side_header a {
@@ -96,7 +95,7 @@ body.side {
     width: 100%;
     z-index: 10;
     background-repeat: no-repeat;
-    background-image: url("images/sidebar_bottom.png");
+    /*background-image: url("images/sidebar_bottom.png");*/
 }
 
 #side_footer img.iconbutton {
