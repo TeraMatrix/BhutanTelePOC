@@ -223,7 +223,7 @@ def page_handler():
     modeperms, modefunc = modes.get(current_mode, ([], None))
     if modefunc == None:
         html.header(_("Sorry"), stylesheets=wato_styles)
-        html.begin_context_buttons()
+        html.begin_context_buttons_wato()
         html.context_button(_("Main Menu"), make_link([("mode", "main")]), "home")
         html.end_context_buttons()
         html.message(_("This module has not yet been implemented."))
@@ -293,7 +293,7 @@ def page_handler():
     # Title
     html.header(modefunc("title"), stylesheets = wato_styles)
     html.write("<script type='text/javascript' src='js/wato.js'></script>")
-    html.write("<div class=wato>\n")
+    html.write("<div class='wato margin-top-50'>\n")
 
     if peer == False:
         html.show_error("<b>%s</b><br>%s" % (
@@ -304,7 +304,7 @@ def page_handler():
 
     try:
         # Show contexts buttons
-        html.begin_context_buttons()
+        html.begin_context_buttons_wato()
         modefunc("buttons")
         for inmode, buttontext, target in extra_buttons:
             if inmode == current_mode:

@@ -74,12 +74,12 @@ def simplelink(text, target, frame="main"):
     html.write(link(text, target, frame) + "<br>\n")
 
 def bulletlink(text, target, frame="main"):
-    html.write("<li class=sidebar>" + link(text, target, frame) + "</li>\n")
+    html.write("<li class=checkmk_sidebar>" + link(text, target, frame) + "</li>\n")
 
 def iconlink(text, target, icon):
-    linktext = '<img class="iconlink main_click" src="images/icon_%s.png">%s' % \
+    linktext = '<img class="main_click iconlink" src="images/icon_%s.png">%s' % \
          ( icon, text )
-    html.write('<a target=main class="iconlink link main_click" href="%s">%s</a><br>' % \
+    html.write('<a target=main class="link main_click iconlink" href="%s">%s</a><br>' % \
             (target, linktext))
 
 def footnotelinks(links):
@@ -154,7 +154,16 @@ def sidebar_foot():
 def page_side():
     if not config.may("general.see_sidebar"):
         return
-    html.html_head(_("Check_MK Sidebar"), javascripts=["sidebar"], stylesheets=["sidebar", "status"])
+
+    stylesheets = ["theme/css/cloud-admin", 
+                    "theme/css/themes/default",
+                    "theme/css/responsive", 
+                    "theme/font-awesome/css/font-awesome.min",
+                    "theme/css/fonts"
+                ]
+    stylesheets += ["sidebar", "status"]
+
+    html.html_head(_("Check_MK Sidebar"), javascripts=["sidebar"], stylesheets=stylesheets)
     html.write('<body class="side" onload="initScrollPos(); setSidebarHeight();" onunload="storeScrollPos()">\n')
     html.write('<div id="check_mk_sidebar">\n')
 
@@ -195,6 +204,8 @@ def page_side():
     html.write("""
         <!-- JQUERY -->
         <script type="text/javascript" src="theme/js/jquery/jquery-1.11.1.min.js" ></script>
+
+
     """)
 
     html.write("<!-- BEGIN: sidebar js for reloading frame -->")

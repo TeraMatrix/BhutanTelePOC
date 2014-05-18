@@ -154,33 +154,31 @@ def render_dashboard(name):
     javascripts += ["dashboard"]
 
     html.header(title, javascripts=javascripts, stylesheets=stylesheets)
-    html.write("""<div class="col-lg-12" id="content">""")
+    html.write("""<div class="col-lg-12 margin-top-50" id="content">""")
     result = """
-        
-                        <!-- PAGE HEADER-->
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="page-header">
-                                    <!-- STYLER -->
-                                    
-                                    <!-- /STYLER -->
-                                    <!-- BREADCRUMBS -->
-                                    <ul class="breadcrumb">
-                                        <li>
-                                            <i class="fa fa-home"></i>
-                                        </li>
-                                        <li>Dashboard</li>
-                                    </ul>
-                                    <!-- /BREADCRUMBS -->
-                                    <div class="clearfix">
-                                        <h3 class="content-title pull-left">Dashboard</h3>
-                                    </div>
-                                    <div class="description">Blank Page</div>
-                                </div>
-                            </div>
+            <!-- PAGE HEADER-->
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="page-header">
+                        <!-- STYLER -->
+                        
+                        <!-- /STYLER -->
+                        <!-- BREADCRUMBS -->
+                        <ul class="breadcrumb">
+                            <li>
+                                <i class="fa fa-home"></i>
+                            </li>
+                            <li>Dashboard</li>
+                        </ul>
+                        <!-- /BREADCRUMBS -->
+                        <div class="clearfix">
+                            <h3 class="content-title pull-left">Dashboard</h3>
                         </div>
-                        <!-- /PAGE HEADER -->
-                    
+                        <div class="description">Blank Page</div>
+                    </div>
+                </div>
+            </div>
+            <!-- /PAGE HEADER -->
         """
     html.write(result)
     html.write("""  <div class="row"> 

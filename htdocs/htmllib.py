@@ -488,6 +488,74 @@ class html:
     def begin_context_buttons(self):
         if not self.context_buttons_open:
             self.context_button_hidden = False
+            result = """
+                <div class="row margin-top-50" >
+
+                    <!-- PAGE HEADER-->
+                    <div class="col-md-12">
+                        <div class="col-md-12">
+                            <div class="page-header" style=" background: none repeat scroll 0 0 #FFFFFF; border-bottom-color: #CDD2D2; color: #000000; margin: 0 -15px 30px; min-height: 85px; overflow: hidden; padding: 0 20px; position: relative;">
+                                <!-- STYLER -->
+                                
+                                <!-- /STYLER -->
+                                <!-- BREADCRUMBS -->
+                                <ul class="breadcrumb" style=" background-color: #FFFFFF; color: #333333; font-size: 14px; margin-bottom: 0; padding-left: 0; padding-right: 0;">
+                                    <li>
+                                        <i class="fa fa-home"></i>
+                                    </li>
+                                    <li>Views</li>
+                                </ul>
+                                <!-- /BREADCRUMBS -->
+                                <div class="clearfix">
+                                    <h3 class="content-title pull-left" style=" color: #666666;  display: block; font-family: 'Open Sans'; font-size: 30px; font-weight: 300; letter-spacing: -1px; margin: 5px 0; padding: 0;">Views</h3>
+                                </div>
+                                <div class="description" style=" color: #888888; font-size: 14px; font-weight: 300; letter-spacing: 0; margin-bottom: 5px;">View Specific Module Details</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /PAGE HEADER -->
+
+                </div>
+                """
+            self.write(result)
+            self.write("<div class='row'>\n")
+            self.write("<div class='col-md-12'>\n")
+            self.write("<table class='table table-bordered contextlinks'><tr><td>\n")
+            self.context_buttons_open = True
+
+    def begin_context_buttons_wato(self):
+        if not self.context_buttons_open:
+            self.context_button_hidden = False
+            result = """
+                <div class="row margin-top-50" >
+
+                    <!-- PAGE HEADER-->
+                    <div class="col-md-12">
+                        <div class="col-md-12">
+                            <div class="page-header" style=" background: none repeat scroll 0 0 #FFFFFF; border-bottom-color: #CDD2D2; color: #000000; margin: 0 -15px 30px; min-height: 85px; overflow: hidden; padding: 0 20px; position: relative;">
+                                <!-- STYLER -->
+                                
+                                <!-- /STYLER -->
+                                <!-- BREADCRUMBS -->
+                                <ul class="breadcrumb" style=" background-color: #FFFFFF; color: #333333; font-size: 14px; margin-bottom: 0; padding-left: 0; padding-right: 0;">
+                                    <li>
+                                        <i class="fa fa-home"></i>
+                                    </li>
+                                    <li>Wato</li>
+                                </ul>
+                                <!-- /BREADCRUMBS -->
+                                <div class="clearfix">
+                                    <h3 class="content-title pull-left" style=" color: #666666;  display: block; font-family: 'Open Sans'; font-size: 30px; font-weight: 300; letter-spacing: -1px; margin: 5px 0; padding: 0;">Configuration</h3>
+                                </div>
+                                <div class="description" style=" color: #888888; font-size: 14px; font-weight: 300; letter-spacing: 0; margin-bottom: 5px;">NMS Configuration Portal</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /PAGE HEADER -->
+
+                </div>
+                """
+            self.write(result)
             self.write("<div class='row'>\n")
             self.write("<div class='col-md-12'>\n")
             self.write("<table class='table table-bordered contextlinks'><tr><td>\n")
@@ -811,9 +879,9 @@ class html:
     def html_head(self, title, javascripts = [], stylesheets = ["pages"]):
         if not self.req.header_sent:
             self.write(
-                u'''<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html><head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">\n''')
+                u'''<!DOCTYPE html>
+                    <html><head>
+                    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">\n''')
             self.write('<title>')
             self.write(title)
             self.write('</title>\n')
@@ -912,7 +980,7 @@ class html:
         username = "%s" %(login_text)
         result = """
         <!-- HEADER -->
-        <header class="navbar clearfix" id="header">
+        <header class="navbar clearfix navbar-fixed-top" id="header">
             <div class="container">
                     <!-- BEGIN TOP NAVIGATION MENU -->                  
                     <ul class="nav navbar-nav pull-right">

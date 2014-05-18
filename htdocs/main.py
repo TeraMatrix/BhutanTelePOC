@@ -48,8 +48,14 @@ def page_index():
     <link rel="stylesheet" type="text/css" href="theme/css/cloud-admin.css" >
     <link rel="stylesheet" type="text/css"  href="theme/css/themes/default.css" id="skin-switcher" >
     <link rel="stylesheet" type="text/css"  href="theme/css/responsive.css" >
-    <!-- STYLESHEETS --><!--[if lt IE 9]><script src="js/flot/excanvas.min.js"></script><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script><![endif]-->
+    <!-- STYLESHEETS -->
+
+    <!--[if lt IE 9]><script src="js/flot/excanvas.min.js"></script>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js">
+    </script><![endif]-->
     <link href="theme/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    
     <!-- ANIMATE -->
     <link rel="stylesheet" type="text/css" href="theme/css/animatecss/animate.min.css" />
     <!-- DATE RANGE PICKER -->

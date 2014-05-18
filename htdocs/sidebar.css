@@ -43,6 +43,7 @@ body.side {
     overflow:hidden;
     font-size: 9pt;
     margin: 0px;
+    border-right: 1px solid #CDD2D2;
 }
 
 /* Top logo part */
@@ -61,8 +62,9 @@ body.side {
 #side_header a {
     display: block;
     width: 100%;
-    height: 55px;
+    height: 49px;
     text-decoration: none;
+    border-bottom: 1px solid #E7E7E7;
 }
 
 #side_version {
@@ -70,7 +72,7 @@ body.side {
     top: 24px;
     left: 64px;
     z-index: 54;
-    color: #fff;
+    color: #555;
     text-align: right;
     width: 200px;
     font-size: 8pt;
@@ -80,21 +82,23 @@ body.side {
 #side_content {
     z-index: 5;
     width: 100%;
-    height: 500px;
+    /*height: 500px;*/
     overflow: hidden;
     color: #000000;
     padding-top: 55px;
+    border-bottom: 1px solid #E7E7E7;
+    border-top: 1px solid #FFF !important;
+
 }
 
 /* The footer of the sidebar */
 #side_footer {
-    position: absolute;
     bottom: 0;
     left: 0;
-    height: 44px;
     width: 100%;
     z-index: 10;
-    background-repeat: no-repeat;
+    border-top: 1px solid #FFF !important;
+    /*background-repeat: no-repeat;*/
     /*background-image: url("images/sidebar_bottom.png");*/
 }
 
@@ -106,7 +110,7 @@ body.side {
 }
 
 #side_footer div.copyright {
-    color: #fff;
+    color: #555;
     position: relative;
     left: 141px;
     top: -5px;
@@ -119,37 +123,42 @@ body.side {
 }
 
 #side_footer a:hover {
-    color: #fff;
+    color: #555;
 }
 
 /* General layout of snapins */
 div.snapin {
-    width: 255px;
-    margin: 0 0 0 5px;
+    width: 260px;
+    margin: 5px;
     padding: 0;
     overflow: hidden;
+
 }
 
 /* Header of the snapin */
 div.snapin div.head {
     width: 260px;
-    text-align: center;
-    color: #fff;
-    height: 26px;
+    text-align: left;
+    color: #555;
+    font-size: 13px;
     line-height: 29px;
+    padding: 10px;
 }
 
 div.snapin div.head b {
-    font-weight: normal;
+    font-weight: 600;
 }
 
 
 div.snapin div.head.open {
-    background-image: url("images/snapin_header.png");
+    /*background-image: url("images/snapin_header.png");*/
+    background: none repeat scroll 0 0 #BBBBBB !important;
 }
 
 div.snapin div.head.closed {
-    background-image: url("images/snapin_closed.png");
+    /*background-image: url("images/snapin_closed.png");*/
+    background: none repeat scroll 0 0 #CCCCCC !important;
+
 }
 
 /* close button on header */
@@ -170,8 +179,7 @@ div.snapin div.closesnapin img {
 
 div.snapin div.minisnapin {
     float: left;
-    margin-left: 13px;
-    margin-top:  11px;
+    margin: 10px;
     line-height: 0px;
     height: 8px;
 }
@@ -183,19 +191,22 @@ div.snapin div.minisnapin img {
 
 
 div.snapin div.content {
-    background-image: url("images/snapin_background.png");
-    background-repeat: repeat-y;
-    background-position: left;
+    /*background-image: url("images/snapin_background.png");*/
+    /*background-repeat: repeat-y;*/
+    /*background-position: left;*/
 
     /* It's important for the left/right padding to be substracted
      * from the width defined below. The regular width would be 260px. */
-    padding: 10px 15px 5px;
-    width: 230px;
+    padding: 10px;
+    width: 260px;
+    border-top-color: rgba(0, 0, 0, 0) !important;
+    background: none repeat scroll 0 0 #DBDBDB !important;
 }
 
 div.snapin div.foot {
-    background-image: url("images/snapin_footer.png");
-    background-repeat: no-repeat;
+    /*background-image: url("images/snapin_footer.png");*/
+    /*background-repeat: no-repeat;*/
+
     width: 260px;
     height: 5px;
     line-height: 5px;
@@ -211,12 +222,12 @@ div.snapin .content_center {
 }
 
 div.snapin td {
-    color: #fff;
+    color: #555;
 }
 
 div.snapin h3 {
     margin: 2px 0px;
-    color: #fff;
+    color: #555;
     font-size: 100%;
 }
 
@@ -229,25 +240,30 @@ div.snapin li {
 /* Normal link in snapins */
 div.snapin a {
     text-decoration: none;
-    font-weight: normal;
-    color: #fff;
+    color: #555;
+}
+
+a.iconlink {
+    font-weight: 600;
+    margin: 0 5px;
 }
 
 div.snapin a:hover {
     text-decoration: underline;
-    color: #fff;
+    color: #111;
 }
 
 div.snapin ul {
-    margin: 0;
+    margin: 5px;
     padding: 0;
     padding-left: 16px;
     /* width: 220px; Bei mehrstufigen Einrueckungen stimmt der rechte Rand nicht */
 }
 
-div.snapin li.sidebar {
-    margin-left: 0;
-    margin-left: 0;
+div.snapin li.checkmk_sidebar {
+    margin: 5px 0;
+    padding: 0 5px 1px 10px;
+    border-left: dotted 1px #555; 
 }
 
 div.snapin img.iconlink {
@@ -339,10 +355,10 @@ div#snapinDragIndicator {
   line-height:       1px;
   font-size:         1px;
   width:             249px;
-  background-color:  #fff;
+  background-color:  #555;
   margin:            0px 0px 0px 10px;
   border-radius:     3px;
-  box-shadow:        0px 0px 5px #ffffff;
+  box-shadow:        0px 0px 5px #555fff;
 }
 
 
@@ -376,13 +392,13 @@ div.add_snapin div.snapinadder {
 }
 div.add_snapin div.snapinadder:hover {
     background-color: #69a;
-    box-shadow: 0px 0px 10px #fff;
-    border-color: #fff; /* #9bc #9bc #fff; */
+    box-shadow: 0px 0px 10px #555;
+    border-color: #555; /* #9bc #9bc #555; */
     position: relative;
 }
 
 div.add_snapin div.snapinadder div.description {
-    color: #fff;
+    color: #555;
     padding: 10px;
 }
 div.add_snapin div.snapin_preview div.clickshield {
