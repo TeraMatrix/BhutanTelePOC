@@ -1236,7 +1236,7 @@ class html:
                                 <i class="fa fa-angle-down"></i>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a href="#"><i class="fa fa-user"></i> My Profile</a></li>
+                                <li><a href="user_profile.py"><i class="fa fa-user"></i> My Profile</a></li>
                                 <li><a href="#"><i class="fa fa-cog"></i> Account Settings</a></li>
                                 <li><a href="#"><i class="fa fa-eye"></i> Privacy Settings</a></li>
                                 <li><a href="logout.py"><i class="fa fa-power-off"></i> Log Out</a></li>

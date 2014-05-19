@@ -1816,7 +1816,7 @@ def mode_editfolder(phase, new):
         forms.section()
         html.text_input("title", title)
         html.set_focus("title")
-
+        forms.end_section()
         # folder name (omit this for root folder)
         if not (not new and g_folder == g_root_folder):
             if not config.wato_hide_filenames:
@@ -1827,7 +1827,7 @@ def mode_editfolder(phase, new):
                     html.write(name)
                 html.help(_("This is the name of subdirectory where the files and "
                     "other folders will be created. You cannot change this later."))
-
+                forms.end_section()
         # Attributes inherited to hosts
         if have_folder_attributes():
             if new:
@@ -2063,10 +2063,12 @@ def mode_edithost(phase, new, cluster):
         if hostname and mode == "edit":
             forms.section(_("Hostname"), simple=True)
             html.write(hostname)
+            forms.end_section()
         else:
             forms.section(_("Hostname"))
             html.text_input("host")
             html.set_focus("host")
+            forms.end_section()
 
         # Cluster: nodes
         if cluster:
@@ -2075,6 +2077,7 @@ def mode_edithost(phase, new, cluster):
             vs.render_input("nodes", host[".nodes"])
             html.help(_('Enter the host names of the cluster nodes. These '
                        'hosts must be present in WATO. '))
+            forms.end_section()
 
         configure_attributes(new, {hostname: host}, "host", parent = g_folder)
 
@@ -2339,6 +2342,7 @@ def mode_search(phase):
     forms.section(_("Hostname"))
     html.text_input("host")
     html.set_focus("host")
+    forms.end_section()
 
     # Attributes
     configure_attributes(False, {}, "search", parent = None)
@@ -2668,13 +2672,14 @@ def mode_bulk_inventory(phase):
         html.radiobutton("how", "remove",  False, _("Remove obsolete services") + "<br>")
         html.radiobutton("how", "fixall",  False, _("Find new &amp; remove obsolete") + "<br>")
         html.radiobutton("how", "refresh", False, _("Refresh all services (tabula rasa)") + "<br>")
+        forms.end_section()
 
         forms.section(_("Selection"))
         if complete_folder:
             html.checkbox("recurse", True, label=_("Include all subfolders"))
             html.write("<br>")
         html.checkbox("only_failed", False, label=_("Only include hosts that failed on previous inventory"))
-
+        forms.end_section()
         # Start button
         forms.end()
         html.button("_start", _("Start"))
@@ -2866,6 +2871,7 @@ def bulk_cleanup_attributes(the_file, hosts):
             html.checkbox("_clean_%s" % attrname, False, label=label)
         html.help(attr.help())
 
+        forms.end_section()
     return num_shown > 0
 
 
@@ -3067,7 +3073,7 @@ def mode_parentscan(phase):
                 _("Skip hosts hosts with non-empty parents (also if inherited)") + "<br>")
         html.radiobutton("select", "ignore",  settings["select"] == "ignore",
                 _("Scan all hosts") + "<br>")
-
+        forms.end_section()
         # Performance
         forms.section(_("Performance"))
         html.write("<table><tr><td>")
@@ -3092,12 +3098,12 @@ def mode_parentscan(phase):
         html.number_input("ping_probes", settings.get("ping_probes", 5), size=2)
         html.write('</td></tr>')
         html.write('</table>')
-
+        forms.end_section()
         # Configuring parent
         forms.section(_("Configuration"))
         html.checkbox("force_explicit",
             settings["force_explicit"], label=_("Force explicit setting for parents even if setting matches that of the folder"))
-
+        forms.end_section()
         # Gateway creation
         forms.section(_("Creation of gateway hosts"))
         html.write(_("Create gateway hosts in<ul>"))
@@ -3115,7 +3121,7 @@ def mode_parentscan(phase):
         html.write("</ul>")
         html.write(_("Alias for created gateway hosts") + ": ")
         html.text_input("alias", settings["alias"])
-
+        forms.end_section()
         # Start button
         forms.end()
         html.button("_start", _("Start"))
@@ -3285,7 +3291,7 @@ def mode_random_hosts(phase):
     html.number_input("folders", 10)
     html.write("<br>%s: " % _("Levels of folders to create"))
     html.number_input("levels", 1)
-
+    forms.end_section()
     forms.end()
     html.button("start", _("Start!"), "submit")
     html.hidden_fields()
@@ -4973,7 +4979,7 @@ def configure_attributes(new, hosts, for_what, parent, myself=None, without_attr
 
                 html.write('<div class="inherited" id="attr_default_%s" style="%s">'
                    % (attrname, active and "display: none" or ""))
-
+            forms.end_section()
             #
             # DIV with actual / inherited / default value
             #
@@ -5523,6 +5529,7 @@ def mode_globalvars(phase):
                     "snapin_switch_" + (defaultvalue and "on" or "off"))
                 else:
                     html.write('<a href="%s">%s</a>' % (edit_url, to_text))
+            forms.end_section()
     forms.end()
     html.write('</div>')
 
@@ -5584,11 +5591,13 @@ def mode_edit_configvar(phase):
         forms.section(_("Variable for <tt>%s.mk</tt>" %
             { "check_mk" : "main" }.get(domain, domain)))
         html.write("<tt>%s</tt>" % varname)
+        forms.end_section()
 
     forms.section(_("Current setting"))
     valuespec.render_input("ve", value)
     valuespec.set_focus("ve")
     html.help(valuespec.help())
+    forms.end_section()
 
     forms.section(_("Default setting"))
     defvalue = valuespec.default_value()
@@ -5600,6 +5609,7 @@ def mode_edit_configvar(phase):
             html.write(_("Your setting and factory settings are identical."))
         else:
             html.write(valuespec.value_to_text(defvalue))
+    forms.end_section()
 
     forms.end()
     html.button("save", _("Save"))
@@ -5930,6 +5940,7 @@ def mode_edit_group(phase, what):
         clone_group = None
         html.write(name)
         html.set_focus("alias")
+    forms.end_section()
 
     forms.section(_("Alias"))
     html.help(_("An Alias or description of this group."))
@@ -5940,6 +5951,7 @@ def mode_edit_group(phase, what):
         else:
             alias = name
     html.text_input("alias", alias)
+    forms.end_section()
     forms.end()
     html.button("save", _("Save"))
     html.hidden_fields()
@@ -6295,12 +6307,14 @@ def mode_edit_timeperiod(phase):
         alias = timeperiods[name].get("alias", "")
     else:
         alias = ""
+    forms.end_section()
 
     forms.section(_("Alias"))
     html.help(_("An alias or description of the timeperiod"))
     html.text_input("alias", alias, size = 81)
     if not new:
         html.set_focus("alias")
+    forms.end_section()
 
     # Week days
     forms.section(_("Weekdays"))
@@ -6315,7 +6329,7 @@ def mode_edit_timeperiod(phase):
         timeperiod_ranges(weekday, weekday, new)
         html.write("</tr>")
     html.write("</table>")
-
+    forms.end_section()
     # Exceptions
     nagurl = "../nagios/docs/objectdefinitions.html#timeperiod"
     forms.section(_("Exceptions"))
@@ -6330,12 +6344,12 @@ def mode_edit_timeperiod(phase):
             exceptions.append((k, map(convert_from_range, timeperiod[k])))
     exceptions.sort()
     vs_ex.render_input("except", exceptions)
-
+    forms.end_section()
     # Excludes
     if other_tps:
         forms.section(_("Exclude"))
         vs_excl.render_input("exclude", timeperiod.get("exclude", []))
-
+        forms.end_section()
 
     forms.end()
     html.button("save", _("Save"))
@@ -6796,14 +6810,14 @@ def mode_edit_site(phase):
         html.set_focus("id")
     else:
         html.write(siteid)
-
+    forms.end_section()
     # Alias
     forms.section(_("Alias"))
     html.text_input("alias", site.get("alias", ""), size = 60)
     if not new:
         html.set_focus("alias")
     html.help(_("An alias or description of the site"))
-
+    forms.end_section()
 
     forms.header(_("Livestatus settings"))
     forms.section(_("Connection"))
@@ -6819,7 +6833,7 @@ def mode_edit_site(phase):
                "to connect to foreign sites on localhost. Please make sure that this "
                "site has proper read and write permissions to the UNIX socket of the "
                "foreign site."))
-
+    forms.end_section()
     # Timeout
     forms.section(_("Connect Timeout"))
     timeout = site.get("timeout", 10)
@@ -6829,14 +6843,14 @@ def mode_edit_site(phase):
                  "to the site to be established before the site is considered to be unreachable. "
                  "If not set, the operating system defaults are begin used and just one login attempt is being. "
                  "performed."))
-
+    forms.end_section()
     # Persistent connections
     forms.section(_("Persistent Connection"), simple=True)
     html.checkbox("persist", site.get("persist", False), label=_("Use persistent connections"))
     html.help(_("If you enable persistent connections then Multisite will try to keep open "
               "the connection to the remote sites. This brings a great speed up in high-latency "
               "situations but locks a number of threads in the Livestatus module of the target site."))
-
+    forms.end_section()
     # URL-Prefix
     docu_url = "http://mathias-kettner.de/checkmk_multisite_modproxy.html"
     forms.section(_("URL prefix"))
@@ -6848,7 +6862,7 @@ def mode_edit_site(phase):
                  "configuration in your local system apache that proxies such URLs ot the according remote site. "
                  "Please refer to the <a target=_blank href='%s'>online documentation</a> for details. "
                  "The prefix should end with a slash. Omit the <tt>/pnp4nagios/</tt> from the prefix.") % docu_url)
-
+    forms.end_section()
     # Status-Host
     docu_url = "http://mathias-kettner.de/checkmk_multisite_statushost.html"
     forms.section(_("Status host"))
@@ -6869,13 +6883,14 @@ def mode_edit_site(phase):
                  "You need to add the remote monitoring servers as hosts into your local monitoring "
                  "site and use their host state as a reachability state of the remote site. Please "
                  "refer to the <a target=_blank href='%s'>online documentation</a> for details.") % docu_url)
-
+    forms.end_section()
     # Disabled
     forms.section(_("Disable"), simple=True)
     html.checkbox("disabled", site.get("disabled", False), label = _("Temporarily disable this connection"))
     html.help( _("If you disable a connection, then no data of this site will be shown in the status GUI. "
                  "The replication is not affected by this, however."))
-
+    forms.end_section()
+    
     # Replication
     forms.header(_("Configuration Replication (Distributed WATO)"))
     forms.section(_("Replication method"))
@@ -6890,13 +6905,14 @@ def mode_edit_site(phase):
                 "replication pool for sake of redundancy.<br><br>Note: Slave sites "
                 "do not need any replication configuration. They will be remote-controlled "
                 "by the master sites."))
-
+    forms.end_section()
+    
     forms.section(_("Peer replication priority"))
     html.number_input("repl_priority", site.get("repl_priority", 0), size=2)
     html.help(_("The replication priority is used to determine the master site "
                 "from the available peers and local sites. "
                 "The site with the highest number takes precedence."))
-
+    forms.end_section()
 
     forms.section(_("Multisite-URL of remote site"))
     html.text_input("multisiteurl", site.get("multisiteurl", ""), size=60)
@@ -6905,11 +6921,13 @@ def mode_edit_site(phase):
                    "appended, but it must always be an absolute URL. Please note, that "
                    "that URL will be fetched by the Apache server of the local "
                    "site itself, whilst the URL-Prefix is used by your local Browser."))
+    forms.end_section()
 
     forms.section(_("SSL"), simple=True)
     html.checkbox("insecure", site.get("insecure", False), label = _('Ignore SSL certificate errors'))
     html.help( _('This might be needed to make the synchronization accept problems with '
                  'SSL certificates when using an SSL secured connection.'))
+    forms.end_section()
 
     forms.end()
     html.button("save", _("Save"))
@@ -8156,6 +8174,7 @@ def mode_edit_user(phase):
     else:
         html.write(userid)
         html.hidden_field("userid", userid)
+    forms.end_section()
 
     def lockable_input(name, dflt):
         if not is_locked(name):
@@ -8168,6 +8187,7 @@ def mode_edit_user(phase):
     forms.section(_("Full name"))
     lockable_input('alias', userid)
     html.help(_("Full name or alias of the user"))
+    forms.end_section()
 
     # Email address
     forms.section(_("Email address"))
@@ -8175,10 +8195,12 @@ def mode_edit_user(phase):
     html.help(_("The email address is optional and is needed "
                 "if the user is a monitoring contact and receives notifications "
                 "via Email."))
+    forms.end_section()
 
     forms.section(_("Pager address"))
     lockable_input('pager', '')
     html.help(_("The pager address is optional "))
+    forms.end_section()
 
     forms.header(_("Security"))
     forms.section(_("Authentication"))
@@ -8217,6 +8239,7 @@ def mode_edit_user(phase):
                 "<u>secret</u>. The secret will be stored in a local file. Processes "
                 "with read access to that file will be able to use Multisite as "
                 "a webservice without any further configuration."))
+    forms.end_section()
 
     # Locking
     forms.section(_("Disable password"), simple=True)
@@ -8228,6 +8251,7 @@ def mode_edit_user(phase):
     html.help(_("Disabling the password will prevent a user from logging in while "
                  "retaining the original password. Notifications are not affected "
                  "by this setting."))
+    forms.end_section()
 
     # Roles
     forms.section(_("Roles"))
@@ -8251,6 +8275,8 @@ def mode_edit_user(phase):
     if is_locked('roles') and not is_member_of_at_least_one:
         html.write('<i>%s</i>' % _('No roles assigned.'))
 
+    forms.end_section()
+    
     # Contact groups
     forms.header(_("Contact Groups"), isopen=False)
     forms.section()
@@ -8291,12 +8317,14 @@ def mode_edit_user(phase):
                 "then no monitoring contact will be created for the user.") % (url1, url2))
 
     forms.header(_("Notifications"), isopen=False)
+    forms.end_section()
 
     forms.section(_("Enabling"), simple=True)
     html.checkbox("notifications_enabled", user.get("notifications_enabled", False),
          label = _("enable notifications"))
     html.help(_("Notifications are sent out "
                 "when the status of a host or service changes."))
+    forms.end_section()
 
     # Notification period
     forms.section(_("Notification time period"))
@@ -8324,6 +8352,7 @@ def mode_edit_user(phase):
             "s" : _("Start or end of a scheduled downtime"),
         }
     }
+    forms.end_section()
 
     forms.section(_("Notification Options"))
     for title, what, opts in [ ( _("Host events"), "host", "durfs"),
@@ -8339,17 +8368,22 @@ def mode_edit_user(phase):
     html.help(_("Here you specify which types of alerts "
                "will be notified to this contact. Note: these settings will only be saved "
                "and used if the user is member of a contact group."))
+    forms.end_section()
 
     forms.section(_("Notification Method"))
     vs_notification_method.render_input("notification_method", user.get("notification_method"))
+    forms.end_section()
 
     # Notification commands (deprecated)
     forms.section(_("Notification Command for Hosts"))
     html.text_input("host_notification_commands", user.get("host_notification_commands", "check-mk-notify"))
     html.help(_("Use this Nagios command for sending host notifications."))
+    forms.end_section()
+
     forms.section(_("Notification Command for Services"))
     html.text_input("service_notification_commands", user.get("service_notification_commands", "check-mk-notify"))
     html.help(_("Use this Nagios command for sending service notifications."))
+    forms.end_section()
 
     forms.header(_("Personal Settings"), isopen = False)
     select_language(user.get('language', ''))
@@ -8360,6 +8394,7 @@ def mode_edit_user(phase):
                 forms.section(vs.title())
                 vs.render_input("ua_" + name, user.get(name, vs.default_value()))
                 html.help(vs.help())
+                forms.end_section()
 
     # TODO: Later we could add custom macros here, which
     # then could be used for notifications. On the other hand,
@@ -8583,12 +8618,13 @@ def mode_edit_role(phase):
     else:
         html.text_input("id", id)
         html.set_focus("id")
+    forms.end_section()
 
     # Alias
     forms.section(_("Alias"))
     html.help(_("An alias or description of the role"))
     html.text_input("alias", role.get("alias", ""), size = 50)
-
+    forms.end_section()
     # Based on
     if not role.get("builtin"):
         forms.section(_("Based on role"))
@@ -8599,7 +8635,7 @@ def mode_edit_role(phase):
                     "based on."))
         choices = [ (i, r["alias"]) for i, r in roles.items() if r.get("builtin") ]
         html.sorted_select("basedon", choices, role.get("basedon", "user"))
-
+        forms.end_section()
 
     # Permissions
     base_role_id = role.get("basedon", id)
@@ -8634,6 +8670,7 @@ def mode_edit_role(phase):
             html.select("perm_" + pname, choices, { True: "yes", False: "no" }.get(pvalue, "default"), attrs={"style": "width: 130px;"} )
 
             html.help(perm["description"])
+            forms.end_section()
 
     forms.end()
     html.button("save", _("Save"))
@@ -8990,12 +9027,13 @@ def mode_edit_auxtag(phase):
     html.help(_("The internal name of the tag. The special tags "
                 "<tt>snmp</tt>, <tt>tcp</tt> and <tt>ping</tt> can "
                 "be used here in order to specify the agent type."))
+    forms.end_section()
 
     # Title
     forms.section(_("Title"))
     html.text_input("title", title, size = 30)
     html.help(_("An alias or description of this auxiliary tag"))
-
+    forms.end_section()
     # Button and end
     forms.end()
     html.button("save", _("Save"))
@@ -9198,11 +9236,13 @@ def mode_edit_hosttag(phase):
         html.set_focus("tag_id")
     else:
         html.write(tag_id)
+    forms.end_section()
 
     # Title
     forms.section(_("Title"))
     html.help(_("An alias or description of this tag group"))
     html.text_input("title", title, size = 30)
+    forms.end_section()
 
     # Choices
     forms.section(_("Choices"))
@@ -9218,6 +9258,7 @@ def mode_edit_hosttag(phase):
                  "be able to detect the renaming and cannot exchange the tags "
                  "in all folders, hosts and rules accordingly."))
     forms.input(vs_choices, "choices", choices)
+    forms.end_section()
 
 
     # Button and end
@@ -10479,6 +10520,7 @@ def mode_edit_rule(phase, new = False):
     forms.section(_("Folder"))
     html.select("new_rule_folder", folder_selection(g_root_folder), folder[".path"])
     html.help(_("The rule is only applied to hosts directly in or below this folder."))
+    forms.end_section()
 
     # Host tags
     forms.section(_("Host tags"))
@@ -10486,6 +10528,7 @@ def mode_edit_rule(phase, new = False):
     html.help(_("The rule will only be applied to hosts fullfulling all of "
                  "of the host tag conditions listed here, even if they appear "
                  "in the list of explicit host names."))
+    forms.end_section()
 
     # Explicit hosts / ALL_HOSTS
     forms.section(_("Explicit hosts"))
@@ -10509,6 +10552,7 @@ def mode_edit_rule(phase, new = False):
     html.help(_("You can enter a number of explicit host names that rule should or should "
                  "not apply to here. Leave this option disabled if you want the rule to "
                  "apply for all hosts specified by the given tags."))
+    forms.end_section()
 
     # Itemlist
     itemtype = rulespec["itemtype"]
@@ -10520,8 +10564,11 @@ def mode_edit_rule(phase, new = False):
                          "in question. Adding a <tt>$</tt> to the end forces an excact "
                          "match. Pattern use <b>regular expressions</b>. A <tt>.*</tt> will "
                          "match an arbitrary text."))
+            forms.end_section()
+
         elif itemtype == "checktype":
             forms.section(_("Check types"))
+            forms.end_section()
         elif itemtype == "item":
             forms.section(rulespec["itemname"].title())
             if rulespec["itemhelp"]:
@@ -10532,6 +10579,7 @@ def mode_edit_rule(phase, new = False):
                              "here. <b>Note:</b> the match is done on the <u>beginning</u> "
                              "of the item in question. Regular expressions are interpreted, "
                              "so appending a <tt>$</tt> will force an exact match."))
+            forms.end_section()
         else:
             raise MKGeneralException("Invalid item type '%s'" % itemtype)
 
@@ -10580,13 +10628,14 @@ def mode_edit_rule(phase, new = False):
             valuespec.render_input("ve", valuespec.default_value())
 
         valuespec.set_focus("ve")
+        forms.end_section()
     else:
         forms.section("")
         for posneg, img in [ ("positive", "yes"), ("negative", "no")]:
             val = img == "yes"
             html.write('<img class=ruleyesno align=top src="images/rule_%s.png"> ' % img)
             html.radiobutton("value", img, value == val, _("Make the outcome of the ruleset <b>%s</b><br>") % posneg)
-
+        forms.end_section()
     # Addiitonal rule options
     vs_rule_options.render_input("options", rule_options)
 
@@ -10944,6 +10993,7 @@ def select_language(user_language):
                     'but comes without any actual localisations (translations). If you want to '
                     'create you own translation, you find <a href="%(url)s">documentation online</a>.') %
                     { "url" : "http://mathias-kettner.de/checkmk_multisite_i18n.html"} )
+        forms.end_section()
 
 def page_user_profile():
     if not config.user_id:
@@ -11026,7 +11076,38 @@ def page_user_profile():
 
     html.header(_("Edit user profile"),
                 javascripts = ['wato'],
-                stylesheets = ['check_mk', 'pages', 'wato', 'status'])
+                stylesheets = wato_styles)
+
+    result = """
+                <div class="row margin-top-50" >
+
+                    <!-- PAGE HEADER-->
+                    <div class="col-md-12">
+                        <div class="col-md-12">
+                            <div class="page-header" style=" background: none repeat scroll 0 0 #FFFFFF; border-bottom-color: #CDD2D2; color: #000000; margin: 0 -15px 30px; min-height: 85px; overflow: hidden; padding: 0 20px; position: relative;">
+                                <!-- STYLER -->
+                                
+                                <!-- /STYLER -->
+                                <!-- BREADCRUMBS -->
+                                <ul class="breadcrumb" style=" background-color: #FFFFFF; color: #333333; font-size: 14px; margin-bottom: 0; padding-left: 0; padding-right: 0;">
+                                    <li>
+                                        <i class="fa fa-home"></i>
+                                    </li>
+                                    <li>User Profile</li>
+                                </ul>
+                                <!-- /BREADCRUMBS -->
+                                <div class="clearfix">
+                                    <h3 class="content-title pull-left" style=" color: #666666;  display: block; font-family: 'Open Sans'; font-size: 30px; font-weight: 300; letter-spacing: -1px; margin: 5px 0; padding: 0;">Profile</h3>
+                                </div>
+                                <div class="description" style=" color: #888888; font-size: 14px; font-weight: 300; letter-spacing: 0; margin-bottom: 5px;">Edit user account details</div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /PAGE HEADER -->
+
+                </div>
+                """
+    html.write(result)
 
     if success:
         html.message(_("Successfully updated user profile."))
@@ -11048,18 +11129,22 @@ def page_user_profile():
         return attr in locked_attributes
 
     html.begin_form("profile", method="POST")
+
     html.write('<div class=wato>')
 
     forms.header(_("Personal Settings"))
     forms.section(_("Name"), simple=True)
     html.write(user.get("alias", config.user_id))
+    forms.end_section()
 
     if config.may('general.change_password') and not is_locked('password'):
         forms.section(_("Password"))
         html.password_input('password', autocomplete = "off")
+        forms.end_section()
 
         forms.section(_("Password confirmation"))
         html.password_input('password2', autocomplete = "off")
+        forms.end_section()
 
     if config.may('general.edit_profile'):
         select_language(config.get_language(''))
@@ -11069,6 +11154,7 @@ def page_user_profile():
             html.help(_("Here you can configure how you want to be notified about host and service problems and "
                         "other monitoring events."))
             vs_notification_method.render_input("notification_method", user.get("notification_method"))
+            forms.end_section()
             # forms.input(vs_notification_method, "notification_method", user.get("notification_method"))
 
         if config.may('general.edit_user_attributes'):
@@ -11077,11 +11163,14 @@ def page_user_profile():
                 forms.section(vs.title())
                 vs.render_input("ua_" + name, user.get(name, vs.default_value()))
                 html.help(vs.help())
+                forms.end_section()
 
     # Save button
     forms.end()
     html.button("_save", _("Save"))
     html.write('</div>')
+    html.write("<!-- END: wato page_user_profile -->")
+
     html.hidden_fields()
     html.end_form()
     html.footer()
@@ -11237,14 +11326,17 @@ def mode_pattern_editor(phase):
     forms.header(_('Try Pattern Match'))
     forms.section(_('Hostname'))
     html.text_input('host')
+    forms.end_section()
     forms.section(_('Logfile'))
     html.text_input('file')
+    forms.end_section()
     forms.section(_('Text to match'))
     html.help(_('You can insert some text (e.g. a line of the logfile) to test the patterns defined '
           'for this logfile. All patterns for this logfile are listed below. Matching patterns '
           'will be highlighted after clicking the "Try out" button.')
     )
     html.text_input('match', cssclass = 'match', size=100)
+    forms.end_section()
     forms.end()
     html.button('_try', _('Try out'))
     html.hidden_fields()

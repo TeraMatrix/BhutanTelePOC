@@ -93,10 +93,10 @@ body.side {
 
 /* The footer of the sidebar */
 #side_footer {
+	position: absolute;
     bottom: 0;
     left: 0;
-    width: 100%;
-    z-index: 10;
+    width: 99%;
     border-top: 1px solid #FFF !important;
     /*background-repeat: no-repeat;*/
     /*background-image: url("images/sidebar_bottom.png");*/
