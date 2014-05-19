@@ -206,11 +206,11 @@ input:hover, select:hover, textarea:hover {
    browser. That way if you select a zoom level in the browser,
    the quality of the images are better */
 
-/*img.icon {
+img.icon, img.statusicon {
    width: 20px;
    height: 20px;
 }
-
+/*
 h1 {
     color: #fff;
     font-size: 17pt;

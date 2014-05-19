@@ -476,6 +476,31 @@ class html:
                    'onmouseout=\"hilite_icon(this, 0)\">'
                    '</a>' % (id, onclick, style, target, cssclass, url, help, icon))
 
+    def wato_icon_button(self, url, help, icon, id="", onclick="", style="", target="", cssclass=""):
+        if id:
+            id = "id='%s' " % id
+
+        if onclick:
+            onclick = 'onclick="%s" ' % onclick
+            url = "javascript:void(0)"
+
+        if style:
+            style = 'style="%s" ' % style
+
+        if target:
+            target = 'target="%s" ' % target
+
+        if cssclass:
+            cssclass = 'class="%s" ' % cssclass
+
+        self.write('<a %s%s%s%s%sonfocus="if (this.blur) this.blur();" href="%s">'
+                   '<img align=absmiddle class=wato_iconbutton title="%s" '
+                   'src="images/button_%s_lo.png" '
+                   'onmouseover=\"hilite_icon(this, 1)\" '
+                   'onmouseout=\"hilite_icon(this, 0)\">'
+                   '</a>' % (id, onclick, style, target, cssclass, url, help, icon))
+
+
     def empty_icon_button(self):
         self.write('<img class="iconbutton trans" src="images/trans.png">')
 
@@ -588,15 +613,16 @@ class html:
             self.begin_context_buttons()
 
         if icon:
-            title = '<img src="images/icon_%s.png">%s' % (icon, title)
+            title = '<img width="20px" src="images/icon_%s.png">%s' % (icon, title)
         if id:
             idtext = " id='%s'" % id
         else:
             idtext = ""
-        self.write('<div%s style="display:%s" class="contextlink%s" ' % (idtext, display, hot and " hot" or ""))
-        self.context_button_hover_code(hot and "_hot" or "")
-        self.write('>')
-        self.write('<a href="%s"' % url)
+        # self.write('<div%s style="display:%s" class="contextlink%s" ' % (idtext, display, hot and " hot" or ""))
+        # self.context_button_hover_code(hot and "_hot" or "")
+        # self.write('>')
+        self.write("<div style='margin: 2px; overflow:hidden; display: block; float: left;'>")
+        self.write('<a class="btn btn-primary" href="%s"' % url)
         if hover_title:
             self.write(' title="%s"' % hover_title)
         if bestof:

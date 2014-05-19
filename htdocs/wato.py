@@ -1225,6 +1225,10 @@ def show_hosts(folder):
 
     show_checkboxes = html.var('show_checkboxes', '0') == '1'
 
+
+    html.write("<!-- BEGIN : wato show_hosts --> ")
+    html.write("<div class='col-md-12'>")
+
     html.write("<h3>" + _("Hosts") + "</h3>")
     hostnames = folder[".hosts"].keys()
     hostnames.sort()
@@ -1276,6 +1280,7 @@ def show_hosts(folder):
 
     # Show table of hosts in this folder
     html.begin_form("hosts", None, "POST")
+
     html.write("<table class='data table table-bordered'>\n")
 
     # Remember if that host has a target folder (i.e. was imported with
@@ -1451,6 +1456,10 @@ def show_hosts(folder):
     row_count = len(rendered_hosts)
     headinfo = "%d %s" % (row_count, row_count == 1 and _("host") or _("hosts"))
     html.javascript("update_headinfo('%s');" % headinfo)
+    
+
+    html.write("</div>")
+    html.write("<!-- END : wato show_hosts --> ")
 
     if show_checkboxes:
         html.javascript(
@@ -5517,14 +5526,14 @@ def mode_globalvars(phase):
                     ("_action", "toggle"), ("_varname", varname)])
             if varname in current_settings:
                 if isinstance(valuespec, Checkbox):
-                    html.icon_button(toggle_url, _("Immediately toggle this setting"),
+                    html.wato_icon_button(toggle_url, _("Immediately toggle this setting"),
                         "snapin_switch_" + (current_settings[varname] and "on" or "off"),
                         cssclass="modified")
                 else:
                     html.write('<a class=modified href="%s">%s</a>' % (edit_url, to_text))
             else:
                 if isinstance(valuespec, Checkbox):
-                    html.icon_button(toggle_url, _("Immediately toggle this setting"),
+                    html.wato_icon_button(toggle_url, _("Immediately toggle this setting"),
                     # "snapin_greyswitch_" + (defaultvalue and "on" or "off"))
                     "snapin_switch_" + (defaultvalue and "on" or "off"))
                 else:
@@ -11930,10 +11939,13 @@ def render_folder_path(the_folder = 0, link_to_last = False, keepvarnames = ["mo
                   ("folder", folder[".path"])] + keepvars), folder["title"])
 
     def bc_el_start(end = '', z_index = 0):
-        html.write('<li style="z-index:%d;"><div class="left %s"></div>' % (z_index, end))
+        # html.write('<li style="z-index:%d;"><div class="left %s"></div>' % (z_index, end))
+        html.write('<li style="z-index:%d;">' % (z_index))
 
     def bc_el_end(end = ''):
-        html.write('<div class="right %s"></div></li>' % end)
+        # html.write('<div class="right %s"></div></li>' % end)
+        html.write('</li>')
+
 
     folders = []
     folder = the_folder.get(".parent")
@@ -11959,9 +11971,11 @@ def render_folder_path(the_folder = 0, link_to_last = False, keepvarnames = ["mo
     for part in parts:
         if num == 0:
             bc_el_start('end', z_index = 100 + num)
+            # pass
         else:
             bc_el_start(z_index = 100 + num)
-        html.write('<div class=content>%s</div>\n' % part)
+            # pass
+        html.write('<a href="#" class="btn btn-default">%s</a>\n' % part)
 
         bc_el_end(num == len(parts)-1
                   and not (
