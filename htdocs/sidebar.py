@@ -218,7 +218,7 @@ def page_side():
                 var src = ($(this).attr("href"));
 
                 $("#main_frame",parent.document).attr("src",src);
-                parent.document.reload();
+                //parent.document.reload();
                 return false;
             });
     """)

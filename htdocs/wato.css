@@ -884,6 +884,7 @@ div.varname {
     width: 50%;
     border: 1px solid #000;
     /*color: black;*/
+    border-radius: 2px !important;
 }
 
 .wato table.progress th {
