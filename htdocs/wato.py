@@ -9787,7 +9787,7 @@ def mode_rulesets(phase):
             html.write('<div class=ruleset><div class=text>')
             html.write('<a class="%s" href="%s">%s</a>' %
                       (num_rules and "nonzero" or "zero", view_url, rulespec["title"]))
-            html.write('<span class=dots>%s</span></div>' % ("." * 100))
+            html.write('</div>')
             html.write('<div class="rulecount %s" title="%s">%d</div>' %
                     (num_rules and "nonzero" or "zero", title, num_rules))
             html.write('</div>')

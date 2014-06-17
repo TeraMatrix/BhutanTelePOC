@@ -6671,6 +6671,9 @@ fieldset[disabled] .btn-yellow.active {
   border-right: 1px solid #c4c4c4;
   border-bottom: 1px solid #c4c4c4;
   margin-top: -15px;
+  display: block;
+  overflow: hidden;
+  width: 100%;
 }
 /* Sortable */
 .box-placeholder {
